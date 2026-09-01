@@ -1,0 +1,18 @@
+calendar: PL
+year: 2026
+confirmed: true
+holidays:
+  - {date: 2026-01-01, name: "Nowy Rok"}
+  - {date: 2026-01-06, name: "Trzech Kroli"}
+  - {date: 2026-04-05, name: "Wielkanoc"}
+  - {date: 2026-04-06, name: "Poniedzialek Wielkanocny"}
+  - {date: 2026-05-01, name: "Swieto Pracy"}
+  - {date: 2026-05-03, name: "Swieto Konstytucji 3 Maja"}
+  - {date: 2026-05-24, name: "Zielone Swiatki"}
+  - {date: 2026-06-04, name: "Boze Cialo"}
+  - {date: 2026-08-15, name: "Wniebowziecie NMP"}
+  - {date: 2026-11-01, name: "Wszystkich Swietych"}
+  - {date: 2026-11-11, name: "Narodowe Swieto Niepodleglosci"}
+  - {date: 2026-12-24, name: "Wigilia Bozego Narodzenia"}
+  - {date: 2026-12-25, name: "Boze Narodzenie"}
+  - {date: 2026-12-26, name: "Drugi dzien Bozego Narodzenia"}

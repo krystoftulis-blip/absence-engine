@@ -1,0 +1,15 @@
+calendar: NL
+year: 2025
+confirmed: true
+holidays:
+  - {date: 2025-01-01, name: "Nieuwjaarsdag"}
+  - {date: 2025-04-18, name: "Goede Vrijdag"}
+  - {date: 2025-04-20, name: "Eerste Paasdag"}
+  - {date: 2025-04-21, name: "Tweede Paasdag"}
+  - {date: 2025-04-26, name: "Koningsdag"}
+  - {date: 2025-05-05, name: "Bevrijdingsdag"}
+  - {date: 2025-05-29, name: "Hemelvaartsdag"}
+  - {date: 2025-06-08, name: "Eerste Pinksterdag"}
+  - {date: 2025-06-09, name: "Tweede Pinksterdag"}
+  - {date: 2025-12-25, name: "Eerste Kerstdag"}
+  - {date: 2025-12-26, name: "Tweede Kerstdag"}

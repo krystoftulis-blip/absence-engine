@@ -1,0 +1,3 @@
+# Runtime. The test suite uses only the standard library, so there is nothing
+# else to install to verify the build.
+PyYAML>=6.0

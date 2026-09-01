@@ -1,0 +1,65 @@
+# How each entity's current file maps onto the canonical model.
+#
+# These files are what "no unified system" actually looks like: three entities,
+# three delimiters, three languages, three column vocabularies, and no shared
+# definition of what a "balance" is. The mapping is deliberately small and
+# declarative - onboarding a new entity to the reconciliation is a few lines
+# here, not a code change. That is the cheapest possible on-ramp, and it is why
+# entities in the `register_only` tier can be pulled in one at a time later
+# without redesigning anything.
+
+exports:
+  pl_urlop:
+    file: pl_urlop_2026.csv
+    entity_id: PL-SSC
+    delimiter: ";"
+    employee_column: "Nr pracownika"
+    balances:
+      annual_leave: "Dni pozostale"
+    known_causes:
+      - delta: -6.0
+        bucket: annual_leave
+        cause: >
+          entitlement applied at the 20-day tier although statutory service
+          (previous employers plus education) is already past 10 years - the
+          employee is owed 26
+    note: >
+      Maintained by hand in a spreadsheet. "Dni zalegle" (carried-over days) is
+      kept in a separate column and is not reconciled in v1, because the local
+      sheet does not record which year those days originate from - which is
+      precisely the information the expiry rule needs.
+
+  in_leave_tracker:
+    file: in_leave_tracker_2026.csv
+    entity_id: IN-SSC
+    delimiter: ","
+    employee_column: "Emp Code"
+    balances:
+      earned_leave: "EL Balance"
+      casual_leave: "CL Balance"
+      sick_leave: "SL Balance"
+    known_causes:
+      - delta: -3.0
+        bucket: earned_leave
+        when_region: MH
+        cause: >
+          Karnataka's 18-day earned leave applied to an employee working in
+          Maharashtra, where the statutory entitlement is 21
+    note: >
+      Carries the work state as a column, which is the only reason this file can
+      be reconciled at all. Entities that do not record place of work cannot be
+      reconciled against a state-level rule, and that gap has to be closed
+      before India can go live.
+
+  nl_verlof:
+    file: nl_verlof_2026.csv
+    entity_id: NL-BV
+    delimiter: ","
+    employee_column: "medewerker"
+    balances:
+      statutory: "wettelijk_saldo"
+      supplementary: "bovenwettelijk_saldo"
+    note: >
+      The only local file that already separates statutory from supplementary
+      days. Every other entity keeps one number, which makes their expiry rules
+      unverifiable from the file alone.

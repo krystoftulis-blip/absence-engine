@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "absence-engine"
+version = "0.1.0"
+description = "Multi-entity absence management: one engine, per-entity rules as versioned data"
+requires-python = ">=3.9"
+dependencies = ["PyYAML>=6.0"]
+
+[project.scripts]
+absence = "absence.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

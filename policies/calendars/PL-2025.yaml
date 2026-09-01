@@ -1,0 +1,18 @@
+calendar: PL
+year: 2025
+confirmed: true
+holidays:
+  - {date: 2025-01-01, name: "Nowy Rok"}
+  - {date: 2025-01-06, name: "Trzech Kroli"}
+  - {date: 2025-04-20, name: "Wielkanoc"}
+  - {date: 2025-04-21, name: "Poniedzialek Wielkanocny"}
+  - {date: 2025-05-01, name: "Swieto Pracy"}
+  - {date: 2025-05-03, name: "Swieto Konstytucji 3 Maja"}
+  - {date: 2025-06-08, name: "Zielone Swiatki"}
+  - {date: 2025-06-19, name: "Boze Cialo"}
+  - {date: 2025-08-15, name: "Wniebowziecie NMP"}
+  - {date: 2025-11-01, name: "Wszystkich Swietych"}
+  - {date: 2025-11-11, name: "Narodowe Swieto Niepodleglosci"}
+  - {date: 2025-12-24, name: "Wigilia Bozego Narodzenia"}
+  - {date: 2025-12-25, name: "Boze Narodzenie"}
+  - {date: 2025-12-26, name: "Drugi dzien Bozego Narodzenia"}

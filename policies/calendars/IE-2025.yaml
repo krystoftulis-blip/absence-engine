@@ -1,0 +1,14 @@
+calendar: IE
+year: 2025
+confirmed: true
+holidays:
+  - {date: 2025-01-01, name: "New Year's Day"}
+  - {date: 2025-02-03, name: "St Brigid's Day"}
+  - {date: 2025-03-17, name: "St Patrick's Day"}
+  - {date: 2025-04-21, name: "Easter Monday"}
+  - {date: 2025-05-05, name: "May Bank Holiday"}
+  - {date: 2025-06-02, name: "June Bank Holiday"}
+  - {date: 2025-08-04, name: "August Bank Holiday"}
+  - {date: 2025-10-27, name: "October Bank Holiday"}
+  - {date: 2025-12-25, name: "Christmas Day"}
+  - {date: 2025-12-26, name: "St Stephen's Day"}

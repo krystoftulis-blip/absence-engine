@@ -1,0 +1,10 @@
+calendar: IN-DL
+year: 2026
+confirmed: false
+# INCOMPLETE: national gazetted holidays only. State festival holidays are
+# set locally each year and must be supplied by the local HR lead before
+# this calendar can be used. `annual-update` reports this as a blocker.
+holidays:
+  - {date: 2026-01-26, name: "Republic Day"}
+  - {date: 2026-08-15, name: "Independence Day"}
+  - {date: 2026-10-02, name: "Gandhi Jayanti"}

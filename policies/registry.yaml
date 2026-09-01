@@ -1,0 +1,181 @@
+# Entity registry - the unification boundary, made executable.
+#
+# The brief asks for a decision about what to unify. This file IS that decision:
+# every legal entity is classified into exactly one treatment, and the engine
+# refuses to silently ignore an entity that is not listed here.
+#
+# The reasoning: Groupon files ~40 subsidiaries in Exhibit 21.1 but operates
+# consumer sites in 13 countries and employs 1,734 people in total. Entity count
+# and employee count are not the same problem. Configuring 40 policy sets would
+# be forty legal reviews a year to serve a population that is concentrated in a
+# handful of entities. Configuring the entities where the people actually are,
+# and putting a named human owner on the rest, is cheaper and safer.
+#
+# HONESTY NOTE: the per-entity headcount split is NOT public. The `headcount`
+# figures below are working assumptions used to demonstrate the segmentation
+# method. Replacing them with the real HRIS extract is verification step #1 in
+# DECISION.md, and it may well move entities between treatments.
+
+version: 1
+as_of: 2026-09-01
+
+headcount_basis:
+  source: "Groupon, Inc. Form 10-K for FY2025 (filed March 2026), Human Capital"
+  total_employees: 1734
+  north_america: 421
+  international: 1313
+  public_anchors:
+    - "13 countries with localised consumer sites"
+    - "significant shared service operations in Poland (stated in the 10-K)"
+    - "Groupon Shared Services Private Limited exists in India (Exhibit 21.1)"
+  entity_level_split: assumed
+
+treatments:
+  engine: >
+    Full policy configuration in this repository. Balances are computed by the
+    shared engine, reconciled against the local record, and audited. Reserved
+    for entities with enough employees that manual administration is a real
+    cost and a real compliance exposure.
+  register_only: >
+    Employees exist but the population is too small to justify a maintained
+    rule set in v1. The entity stays on its local process, but it is listed in
+    a controlled register with a named accountable owner, an annual attestation
+    and a mandatory review date. This is a deliberate scope decision, not an
+    oversight - the risk of a stale, unreviewed policy file is higher than the
+    risk of a small entity continuing as today under explicit ownership.
+  dormant: >
+    No employees on payroll (holding, IP, legacy trading or wound-down
+    entities). Out of scope. Re-checked annually against Exhibit 21.1 so an
+    entity that starts hiring cannot silently fall outside the system.
+
+entities:
+  # ---------------------------------------------------------------- engine
+  - entity_id: PL-SSC
+    legal_entity: "Groupon Shared Services Poland Sp. z.o.o."
+    jurisdiction: PL
+    treatment: engine
+    headcount: 520
+    rationale: "Largest single population; the 10-K names Poland as a shared services hub."
+
+  - entity_id: IN-SSC
+    legal_entity: "Groupon Shared Services Private Limited"
+    jurisdiction: IN
+    treatment: engine
+    headcount: 380
+    rationale: "Second shared services hub; rules differ by state, so manual tracking is the least reliable here."
+
+  - entity_id: US-CORP
+    legal_entity: "Groupon, Inc."
+    jurisdiction: US
+    treatment: engine
+    headcount: 400
+    rationale: "North America segment population; no statutory floor, so the policy itself is the only control."
+
+  - entity_id: IE-INTL
+    legal_entity: "Groupon International Ltd."
+    jurisdiction: IE
+    treatment: engine
+    headcount: 120
+    rationale: "International contracting entity for parts of EMEA."
+
+  - entity_id: NL-BV
+    legal_entity: "Groupon Netherlands B.V."
+    jurisdiction: NL
+    treatment: engine
+    headcount: 70
+    rationale: "Two-tier statutory/supplementary expiry is the highest-risk rule in the portfolio."
+
+  - entity_id: DE-GMBH
+    legal_entity: "Groupon Europe GmbH"
+    jurisdiction: DE
+    treatment: engine
+    headcount: 60
+    rationale: "Works council jurisdiction; needs a defensible audit trail before any change."
+
+  # ---------------------------------------------------------- register_only
+  - entity_id: PL-LOCAL
+    legal_entity: "Groupon Sp.z o.o."
+    jurisdiction: PL
+    treatment: register_only
+    headcount: 45
+    owner_role: "Country HR Lead, Poland"
+  - entity_id: IT-SRL
+    legal_entity: "Groupon S.r.l."
+    jurisdiction: IT
+    treatment: register_only
+    headcount: 35
+    owner_role: "HR Business Partner, Southern Europe"
+  - entity_id: ES-SLU
+    legal_entity: "Groupon Spain, SLU"
+    jurisdiction: ES
+    treatment: register_only
+    headcount: 30
+    owner_role: "HR Business Partner, Southern Europe"
+  - entity_id: FR-SAS
+    legal_entity: "Groupon France SAS"
+    jurisdiction: FR
+    treatment: register_only
+    headcount: 25
+    owner_role: "HR Business Partner, Western Europe"
+  - entity_id: UK-MYCITYDEAL
+    legal_entity: "MyCity Deal Ltd."
+    jurisdiction: GB
+    treatment: register_only
+    headcount: 25
+    owner_role: "HR Business Partner, UK & Ireland"
+  - entity_id: AU-PTY
+    legal_entity: "Groupon Australia Pty Ltd."
+    jurisdiction: AU
+    treatment: register_only
+    headcount: 15
+    owner_role: "HR Business Partner, APAC"
+  - entity_id: CA-INC
+    legal_entity: "Groupon Canada Inc."
+    jurisdiction: CA
+    treatment: register_only
+    headcount: 15
+    owner_role: "HR Business Partner, North America"
+  - entity_id: BE-SPRL
+    legal_entity: "GROUPON S.P.R.L."
+    jurisdiction: BE
+    treatment: register_only
+    headcount: 8
+    owner_role: "HR Business Partner, Western Europe"
+  - entity_id: CH-INTL
+    legal_entity: "Groupon International GmbH"
+    jurisdiction: CH
+    treatment: register_only
+    headcount: 6
+    owner_role: "HR Business Partner, Western Europe"
+
+  # ---------------------------------------------------------------- dormant
+  - {entity_id: US-ACTIVITIES,   legal_entity: "Groupon Activities, LLC",            jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-DISTRIB,      legal_entity: "Groupon Distribution Services, LLC", jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-MERCHSVC,     legal_entity: "Groupon Merchant Services, LLC",     jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-GIHOLD,       legal_entity: "GI International Holdings, Inc.",    jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-CANCORP,      legal_entity: "Groupon Canada Corp, Inc.",          jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-GETAWAYS,     legal_entity: "Groupon Getaways, Inc.",             jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-GOODS,        legal_entity: "Groupon Goods, Inc.",                jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-PRODSVC,      legal_entity: "Groupon Product Services, LLC",      jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-TRAILBLAZER,  legal_entity: "Groupon Trailblazer, Inc.",          jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-GROUPONLIVE,  legal_entity: "GrouponLive, LLC",                   jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-LIVINGSOCIAL, legal_entity: "LivingSocial, LLC",                  jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: US-OBTIVA,       legal_entity: "Obtiva Corporation",                 jurisdiction: US, treatment: dormant, headcount: 0}
+  - {entity_id: FR-GOODS,        legal_entity: "Groupon Goods France",               jurisdiction: FR, treatment: dormant, headcount: 0}
+  - {entity_id: DE-GOODS,        legal_entity: "Groupon Goods Germany GmbH",         jurisdiction: DE, treatment: dormant, headcount: 0}
+  - {entity_id: IE-CITYDEAL,     legal_entity: "Groupon-CityDeal (Ireland) Ltd.",    jurisdiction: IE, treatment: dormant, headcount: 0}
+  - {entity_id: IT-GOODS,        legal_entity: "Groupon Goods Italy S.r.l.",         jurisdiction: IT, treatment: dormant, headcount: 0}
+  - {entity_id: LU-SARL,         legal_entity: "GI Luxembourg S.a.r.l",              jurisdiction: LU, treatment: dormant, headcount: 0}
+  - {entity_id: MA-SARL,         legal_entity: "Groupon SARL",                       jurisdiction: MA, treatment: dormant, headcount: 0}
+  - {entity_id: NL-GOODS,        legal_entity: "Groupon Goods Netherlands B.V.",     jurisdiction: NL, treatment: dormant, headcount: 0}
+  - {entity_id: NL-HOLDINGS,     legal_entity: "Groupon Holdings B.V.",              jurisdiction: NL, treatment: dormant, headcount: 0}
+  - {entity_id: CH-GOODSGLOBAL,  legal_entity: "Groupon Goods Global GmbH",          jurisdiction: CH, treatment: dormant, headcount: 0}
+  - {entity_id: CH-TRAVEL,       legal_entity: "Groupon International Travel GmbH",  jurisdiction: CH, treatment: dormant, headcount: 0}
+  - {entity_id: AE-FZE,          legal_entity: "Groupon FZE",                        jurisdiction: AE, treatment: dormant, headcount: 0}
+  - {entity_id: UK-GOODS,        legal_entity: "Groupon Goods UK Ltd.",              jurisdiction: GB, treatment: dormant, headcount: 0}
+  - {entity_id: UK-SHOP,         legal_entity: "Groupon Shop Ltd.",                  jurisdiction: GB, treatment: dormant, headcount: 0}
+  - {entity_id: AU-GETAWAYS,     legal_entity: "Groupon Getaways Pty Ltd.",          jurisdiction: AU, treatment: dormant, headcount: 0}
+
+source_of_entity_list: >
+  Exhibit 21.1 (Subsidiaries of Groupon, Inc.) to the Form 10-K for FY2024,
+  filed with the SEC on 11 March 2025, plus the parent Groupon, Inc.

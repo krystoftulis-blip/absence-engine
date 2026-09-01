@@ -1,0 +1,42 @@
+entity_id: IE-INTL
+legal_entity: "Groupon International Ltd."
+jurisdiction: IE
+country_name: Ireland
+
+# Ireland is here to prove the leave year itself is a variable. The statutory
+# leave year runs 1 April to 31 March, not January to December. Any design that
+# assumes a calendar year - and most spreadsheets do - is already wrong for this
+# entity before a single rule is applied.
+versions:
+  - effective_from: 2023-04-01
+    legal_basis: "Organisation of Working Time Act 1997, s.19"
+    reviewed_by: "TO BE SIGNED OFF - HRBP UK&I + Irish employment counsel"
+    review_due: 2027-02-28
+
+    unit: days
+    rounding: nearest_half_day
+    holiday_calendar: IE
+    consumption_order: expiring_first
+
+    leave_year:
+      type: fixed_window
+      start_month: 4
+      start_day: 1
+
+    buckets:
+      - id: annual_leave
+        label: "Annual leave"
+        absence_type: annual_leave
+        proration: monthly
+        accrual:
+          # 8% of hours worked, capped at four working weeks. Expressed as a
+          # percentage rather than a day count because it is the only formula
+          # that is correct for part-time and irregular-hours staff.
+          method: hours_worked_percentage
+          percentage: 0.08
+          cap: 20
+        carryover: {allowed: true, max_days: 5}
+        expiry: {type: months_after_leave_year_end, months: 6}
+
+    notes:
+      - "v1 uses contracted hours as a proxy for hours actually worked; every balance carries the flag ACCRUAL_USES_CONTRACTED_HOURS. Real time records are required before this entity goes live."

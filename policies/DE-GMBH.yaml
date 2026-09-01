@@ -1,0 +1,46 @@
+entity_id: DE-GMBH
+legal_entity: "Groupon Europe GmbH"
+jurisdiction: DE
+country_name: Germany
+
+versions:
+  - effective_from: 2024-01-01
+    legal_basis: >
+      Bundesurlaubsgesetz (BUrlG) ss.3, 7; ECJ C-684/16 (Max-Planck) on the
+      employer's duty to inform before leave can lapse
+    reviewed_by: "TO BE SIGNED OFF - HRBP DACH + German counsel + works council consultation"
+    review_due: 2026-11-30
+
+    unit: days
+    rounding: nearest_half_day
+    holiday_calendar: DE-BE          # Berlin; other Bundeslaender differ
+    consumption_order: expiring_first
+
+    buckets:
+      - id: statutory
+        label: "Gesetzlicher Mindesturlaub"
+        absence_type: annual_leave
+        proration: monthly
+        accrual: {method: fixed, amount: 20}   # BUrlG minimum on a five-day week
+        carryover: {allowed: true, max_days: null}
+        expiry:
+          type: deadline_in_next_year
+          month: 3
+          day: 31
+          requires_employer_notice: true
+
+      - id: contractual
+        label: "Vertraglicher Zusatzurlaub"
+        absence_type: annual_leave
+        proration: monthly
+        accrual: {method: fixed, amount: 8}
+        carryover: {allowed: true, max_days: 5}
+        expiry: {type: deadline_in_next_year, month: 3, day: 31}
+
+    regions:
+      BE: {label: "Berlin",   overrides: {holiday_calendar: DE-BE}}
+      BY: {label: "Bavaria",  overrides: {holiday_calendar: DE-BY}}
+
+    notes:
+      - "Any change to entitlement or to the leave process is subject to works council co-determination (BetrVG s.87). This is a gate on rollout, not a communication task."
+      - "Public holidays differ by Bundesland; Bavaria has several that Berlin does not."

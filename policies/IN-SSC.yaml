@@ -1,0 +1,87 @@
+entity_id: IN-SSC
+legal_entity: "Groupon Shared Services Private Limited"
+jurisdiction: IN
+country_name: India
+
+# One legal entity, four different sets of statutory rules, because entitlement
+# follows the state Shops & Establishments Act of the place of work rather than
+# the place of incorporation. This is the clearest single argument against
+# "one entity = one policy": the entity is not the unit the law uses.
+versions:
+  - effective_from: 2023-04-01
+    legal_basis: >
+      State Shops & Establishments Acts (Karnataka, Maharashtra, Delhi,
+      Tamil Nadu); Factories Act 1948 s.79 where applicable
+    reviewed_by: "TO BE SIGNED OFF - India HR Lead + local counsel per state"
+    review_due: 2027-01-31
+
+    unit: days
+    rounding: nearest_half_day
+    holiday_calendar: IN-KA          # overridden per state below
+    consumption_order: expiring_first
+    region_required: true            # refuse to compute without a work state
+
+    buckets:
+      - id: earned_leave
+        label: "Earned leave"
+        absence_type: annual_leave
+        proration: monthly
+        accrual:
+          method: days_worked_threshold
+          amount: 18                 # Karnataka default; overridden per state
+          threshold_days: 240
+          eligibility_service_months: 12
+        carryover:
+          allowed: true
+          max_days: 30
+          encash_above_cap: true     # statutory: the excess must be paid, not lost
+        expiry:
+          type: none
+
+      - id: casual_leave
+        label: "Casual leave"
+        absence_type: special_leave
+        proration: monthly
+        accrual: {method: fixed, amount: 12}
+        carryover: {allowed: false}
+        expiry: {type: end_of_leave_year}
+
+      - id: sick_leave
+        label: "Sick leave"
+        absence_type: sick_leave
+        proration: monthly
+        accrual: {method: fixed, amount: 12}
+        carryover: {allowed: false}
+        expiry: {type: end_of_leave_year}
+
+    regions:
+      KA:
+        label: "Karnataka"
+        overrides:
+          holiday_calendar: IN-KA
+          buckets.earned_leave.accrual.amount: 18
+          buckets.earned_leave.accrual.eligibility_service_months: 12
+      MH:
+        label: "Maharashtra"
+        overrides:
+          holiday_calendar: IN-MH
+          buckets.earned_leave.accrual.amount: 21
+          buckets.earned_leave.accrual.eligibility_service_months: 0
+          buckets.earned_leave.accrual.threshold_days: 240
+      DL:
+        label: "Delhi"
+        overrides:
+          holiday_calendar: IN-DL
+          buckets.earned_leave.accrual.amount: 15
+          buckets.casual_leave.accrual.amount: 12
+          buckets.sick_leave.accrual.amount: 0   # DL: combined casual/sick quota of 12
+      TN:
+        label: "Tamil Nadu"
+        overrides:
+          holiday_calendar: IN-TN
+          buckets.earned_leave.accrual.amount: 12
+          buckets.sick_leave.accrual.amount: 12
+
+    notes:
+      - "Accrued earned leave must be encashed on separation; the engine reports the encashable amount rather than forfeiting it."
+      - "Casual and sick leave are separate statutory quotas, not sub-types of annual leave. Merging them into one pot would be unlawful."

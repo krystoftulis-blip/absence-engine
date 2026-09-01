@@ -1,0 +1,47 @@
+entity_id: US-CORP
+legal_entity: "Groupon, Inc."
+jurisdiction: US
+country_name: United States
+
+# The United States has no federal statutory minimum for paid vacation. That
+# does not make it the simple case - it makes it the case where the company's
+# own policy IS the law, and where the rules that do exist are set by state.
+# California prohibits forfeiting accrued vacation at all, so the same national
+# policy produces a different lawful outcome depending on where the employee
+# sits. Modelled as a region override rather than as a separate entity.
+versions:
+  - effective_from: 2024-01-01
+    legal_basis: "Company policy; state wage-and-hour law on accrued vacation (CA Labor Code s.227.3)"
+    reviewed_by: "TO BE SIGNED OFF - US HR Lead + employment counsel"
+    review_due: 2026-12-31
+
+    unit: days
+    rounding: nearest_half_day
+    holiday_calendar: US
+    consumption_order: expiring_first
+
+    buckets:
+      - id: pto
+        label: "Paid time off"
+        absence_type: annual_leave
+        proration: monthly
+        accrual: {method: monthly_accrual, annual_amount: 15}
+        carryover: {allowed: true, max_days: 5}
+        expiry: {type: deadline_in_next_year, month: 3, day: 31}
+
+    regions:
+      IL:
+        label: "Illinois"
+        overrides:
+          holiday_calendar: US
+      CA:
+        label: "California"
+        overrides:
+          holiday_calendar: US
+          # Accrued vacation is earned wages in California. It cannot be
+          # forfeited, so neither the cap nor the expiry date may apply.
+          buckets.pto.carryover.max_days: null
+          buckets.pto.expiry: {type: none}
+
+    notes:
+      - "A single global 'use it or lose it' rule would be unlawful for California employees. This is the concrete reason the design keeps expiry as a per-entity, per-region value rather than a global setting."

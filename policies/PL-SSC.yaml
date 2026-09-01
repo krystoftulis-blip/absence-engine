@@ -1,0 +1,61 @@
+entity_id: PL-SSC
+legal_entity: "Groupon Shared Services Poland Sp. z.o.o."
+jurisdiction: PL
+country_name: Poland
+
+# Reviewed and signed off by a person, not by an engineer. Every change to this
+# file is a legal change and needs a new reviewer and a new effective_from.
+versions:
+  - effective_from: 2024-01-01
+    legal_basis: "Kodeks pracy, art. 152-173 (annual leave); art. 92 (sick pay)"
+    reviewed_by: "TO BE SIGNED OFF - Country HR Lead PL + external employment counsel"
+    review_due: 2026-11-30
+
+    unit: days
+    rounding: up_full_day        # art. 155-3: partial days round up to a full day
+    holiday_calendar: PL
+    consumption_order: expiring_first
+
+    buckets:
+      - id: annual_leave
+        label: "Urlop wypoczynkowy"
+        absence_type: annual_leave
+        proration: monthly
+        accrual:
+          method: tiered_by_service
+          # 20 days below 10 years of statutory service, 26 at or above it.
+          tiers:
+            - {service_years_gte: 10, amount: 26}
+            - {service_years_gte: 0,  amount: 20}
+          # This is the reason the engine can return "unknown". Statutory service
+          # in Poland includes employment with previous employers AND completed
+          # education (a master's degree counts as 8 years). None of that is
+          # derivable from Groupon's own records - it depends on documents the
+          # employee submits. Defaulting to 20 days silently under-grants six
+          # days a year to anyone who has a degree and prior employment.
+          counts_previous_employers: true
+          counts_education: true
+          evidence_required: true
+        carryover:
+          allowed: true
+          max_days: null
+        expiry:
+          type: deadline_in_next_year
+          month: 9
+          day: 30
+          # NOTE: the Labour Code also prescribes a three-year limitation period
+          # after which the claim lapses entirely. Not modelled in v1 because it
+          # only bites in disputes, not in normal balance reporting. Listed in
+          # DECISION.md as a known gap.
+
+    sick_pay:
+      # Employer-funded period before ZUS takes over. Age-banded, which is
+      # exactly the kind of rule that cannot be harmonised globally.
+      employer_paid:
+        - {condition: age_gte_50, days: 14, rate: 0.8}
+        - {condition: age_lt_50,  days: 33, rate: 0.8}
+      then: "ZUS (state social insurance)"
+
+    notes:
+      - "14 public holidays in 2026, granted on top of annual leave, not inside it."
+      - "4 of the annual leave days are 'urlop na zadanie' (on demand) and cannot be refused; modelled as ordinary annual leave in v1."

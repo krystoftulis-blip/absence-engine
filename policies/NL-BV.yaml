@@ -1,0 +1,52 @@
+entity_id: NL-BV
+legal_entity: "Groupon Netherlands B.V."
+jurisdiction: NL
+country_name: Netherlands
+
+# The Netherlands is the reason this engine tracks dated lots instead of a single
+# balance number. Two pots of leave sit in the same account and expire on
+# completely different clocks - six months versus five years. A system that
+# stores one number cannot answer "how many days does this person actually lose
+# on 1 July", which is the only question that matters here.
+versions:
+  - effective_from: 2024-01-01
+    legal_basis: "Burgerlijk Wetboek 7:634-7:645"
+    reviewed_by: "TO BE SIGNED OFF - HRBP Benelux + Dutch employment counsel"
+    review_due: 2026-12-15
+
+    unit: days
+    rounding: nearest_half_day
+    holiday_calendar: NL
+    consumption_order: expiring_first
+
+    buckets:
+      - id: statutory
+        label: "Wettelijke vakantiedagen"
+        absence_type: annual_leave
+        proration: monthly
+        accrual:
+          method: weekly_hours_multiple
+          multiple: 4              # four times the agreed weekly working time
+        carryover: {allowed: true, max_days: null}
+        expiry:
+          type: months_after_leave_year_end
+          months: 6
+          # Statutory days lapse six months after the year in which they accrued,
+          # BUT only if the employer actively told the employee they would.
+          # Without that evidence the days survive. The engine therefore refuses
+          # to expire them unless the notice is recorded against the employee.
+          requires_employer_notice: true
+
+      - id: supplementary
+        label: "Bovenwettelijke vakantiedagen"
+        absence_type: annual_leave
+        proration: monthly
+        accrual: {method: fixed, amount: 5}
+        carryover: {allowed: true, max_days: null}
+        expiry:
+          type: years_after_leave_year_end
+          years: 5
+
+    notes:
+      - "Leave continues to accrue in full during sickness absence; no reduction is applied."
+      - "All unused leave is paid out on termination; the balance is a cash liability, not a soft number."

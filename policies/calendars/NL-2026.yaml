@@ -1,0 +1,15 @@
+calendar: NL
+year: 2026
+confirmed: true
+holidays:
+  - {date: 2026-01-01, name: "Nieuwjaarsdag"}
+  - {date: 2026-04-03, name: "Goede Vrijdag"}
+  - {date: 2026-04-05, name: "Eerste Paasdag"}
+  - {date: 2026-04-06, name: "Tweede Paasdag"}
+  - {date: 2026-04-27, name: "Koningsdag"}
+  - {date: 2026-05-05, name: "Bevrijdingsdag"}
+  - {date: 2026-05-14, name: "Hemelvaartsdag"}
+  - {date: 2026-05-24, name: "Eerste Pinksterdag"}
+  - {date: 2026-05-25, name: "Tweede Pinksterdag"}
+  - {date: 2026-12-25, name: "Eerste Kerstdag"}
+  - {date: 2026-12-26, name: "Tweede Kerstdag"}
