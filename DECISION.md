@@ -5,8 +5,8 @@
 **Unify the engine and the data. Do not unify the rules. Deploy reconciliation
 before migration.**
 
-Concretely: one canonical absence record, one balance calculation, one audit
-trail and one employee experience across every entity that matters. The accrual
+Concretely: one canonical absence record, one balance calculation and one audit
+trail across every entity that matters. The accrual
 formulas, entitlement tiers, leave-year definitions, expiry deadlines, holiday
 calendars and sick-pay bands stay local - but they move out of spreadsheets and
 local knowledge into versioned, dated, human-reviewable policy files that the
@@ -107,9 +107,11 @@ holiday calendars; sick-pay bands; payout-on-termination rules.
 - *Payroll integration.* Absence balances feed payroll for encashment and final
   settlements. Wiring that up before the balances themselves are trusted would
   propagate today's errors into people's pay.
-- *The 26 dormant entities and the 9 small ones.* Named, owned and attested
-  annually, but not configured. A stale, unreviewed policy file is more
-  dangerous than a small entity continuing under an accountable human.
+- *The 26 dormant entities and the 9 small ones.* Named in the registry with an
+  accountable owner and an annual review date, but not configured - and the
+  attestation that review implies is not built either (section 6). A stale,
+  unreviewed policy file is more dangerous than a small entity continuing under
+  a human who owns it.
 
 **The single sentence version:** the decision is not "which system do we buy",
 it is "what is the one true record, who owns each rule, and how does a rule
@@ -303,26 +305,17 @@ The brief asks for a specific correction, so here is where I would look first.
 
 ## 8. How AI was used
 
-Research: mapping Groupon's legal entity structure from SEC filings (Exhibit
-21.1 and the FY2024/FY2025 10-Ks), and assembling the jurisdictional comparison
-- Polish seniority and sick-pay bands, Indian state entitlements, Dutch dual
-expiry, German and Irish specifics. That work would have taken most of a week by
-hand and took about an hour. Drafting: the code, the policy schema and these
-documents were written with an AI agent in the loop throughout.
+Throughout, and as the brief expects: the entity structure came out of the SEC
+filings, the jurisdictional comparison out of primary sources, and the code and
+these documents were drafted with an agent in the loop. The decisions are mine -
+where the boundary runs, reconciliation before migration, and letting the engine
+answer `unknown`.
 
-What I did not delegate: the unification boundary, the decision to make
-reconciliation rather than migration the first deliverable, the choice to let
-the engine return `unknown`, and the judgement about which entities matter. Nor
-would I put AI in the calculation path of a compliance-bearing number - the
-engine is deterministic, its output is fully traced, and every figure can be
-explained rule by rule.
-
-The genuine leverage is elsewhere, and it is the reason policy-as-data pays for
-itself: it turns the annual legal review from *re-implement the rules* into
-*approve a diff*. An agent can draft next year's change from published
-legislative sources; a lawyer approves or rejects it. That is a defensible use
-of AI in a compliance process, and it is the part that scales to the other
-entities later.
+One line the design does not cross: AI is nowhere in the calculation path. The
+engine is deterministic and every figure traces to the rule that produced it. Where
+AI does pay for itself is the annual review - policy-as-data turns it from
+re-deriving the rules into approving a diff, which an agent can draft and a lawyer
+can reject. That is the part that scales to the entities not yet configured.
 
 ---
 
