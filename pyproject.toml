@@ -14,3 +14,6 @@ absence = "absence.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+absence = ["dashboard_template.html"]

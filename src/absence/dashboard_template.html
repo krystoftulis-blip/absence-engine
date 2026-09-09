@@ -1,0 +1,517 @@
+<title>Absence Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F4F6F8; --surface:#FFFFFF; --surface-2:#EAEEF2; --sunken:#F0F3F6;
+  --ink:#16202A; --muted:#5A6C7B; --faint:#8496A4;
+  --line:#D9E0E7; --line-strong:#BFCAD4;
+  --accent:#1F5673; --accent-soft:#E2EDF3;
+  --warn:#8B5716; --warn-soft:#F7EEE1;
+  --bad:#8B3033; --bad-soft:#F7E8E8;
+  --ok:#2C6045; --ok-soft:#E2EFE8;
+  --shadow:0 1px 2px rgba(22,32,42,.06), 0 8px 24px -18px rgba(22,32,42,.3);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F141A; --surface:#161E25; --surface-2:#1D262E; --sunken:#131A21;
+    --ink:#E3E9EF; --muted:#94A4B1; --faint:#71838F;
+    --line:#28323B; --line-strong:#3A4753;
+    --accent:#7FB2CC; --accent-soft:#182732;
+    --warn:#D6A063; --warn-soft:#26200F;
+    --bad:#D98C8E; --bad-soft:#271A1B;
+    --ok:#7FC09C; --ok-soft:#15251D;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F141A; --surface:#161E25; --surface-2:#1D262E; --sunken:#131A21;
+  --ink:#E3E9EF; --muted:#94A4B1; --faint:#71838F;
+  --line:#28323B; --line-strong:#3A4753;
+  --accent:#7FB2CC; --accent-soft:#182732;
+  --warn:#D6A063; --warn-soft:#26200F;
+  --bad:#D98C8E; --bad-soft:#271A1B;
+  --ok:#7FC09C; --ok-soft:#15251D;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1360px;margin:0 auto;padding:32px 24px 72px}
+h1{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:1.9rem;margin:0;line-height:1.15}
+h2{font-size:1.05rem;font-weight:600;margin:0}
+h3{font-size:.92rem;font-weight:600;margin:0}
+p{margin:0}
+.mono,code{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+.eyebrow{font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);font-weight:600}
+
+header.top{display:flex;flex-direction:column;gap:10px;padding-bottom:20px;border-bottom:1px solid var(--line-strong)}
+.subline{color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:6px 18px}
+.synthetic{color:var(--warn);font-weight:500}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;margin:20px 0 4px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:12px 14px;box-shadow:var(--shadow)}
+.kpi .n{font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .l{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-top:3px}
+.kpi.flag .n{color:var(--warn)}
+.kpi.bad .n{color:var(--bad)}
+
+nav.tabs{display:flex;gap:4px;margin:26px 0 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+nav.tabs button{
+  appearance:none;background:none;border:none;border-bottom:2px solid transparent;
+  font:inherit;font-weight:500;color:var(--muted);padding:9px 14px;cursor:pointer;margin-bottom:-1px}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button:hover{color:var(--ink)}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media (min-width:1080px){.layout{grid-template-columns:minmax(0,1fr) 330px}}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+.panel .head{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.panel .body{padding:16px 18px}
+.scroll{overflow-x:auto}
+
+table{border-collapse:collapse;width:100%;font-size:.87rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);font-weight:600;white-space:nowrap;
+   position:sticky;top:0;background:var(--surface)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--sunken)}
+tr.sel td{background:var(--accent-soft)}
+td.wrap{max-width:44ch}
+
+.pill{display:inline-block;background:var(--surface-2);color:var(--muted);font-size:.68rem;letter-spacing:.05em;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap;text-transform:uppercase}
+.pill.engine{background:var(--accent-soft);color:var(--accent)}
+.pill.register_only{background:var(--warn-soft);color:var(--warn)}
+.pill.dormant{background:var(--surface-2);color:var(--faint)}
+.pill.material,.pill.blocker{background:var(--bad-soft);color:var(--bad)}
+.pill.unresolved,.pill.action{background:var(--warn-soft);color:var(--warn)}
+.pill.minor,.pill.missing_in_export,.pill.missing_in_ledger{background:var(--surface-2);color:var(--muted)}
+.pill.match{background:var(--ok-soft);color:var(--ok)}
+.pill.unknown{background:var(--warn-soft);color:var(--warn)}
+.pill.computed{background:var(--ok-soft);color:var(--ok)}
+.pill.flagpill{background:var(--warn-soft);color:var(--warn);text-transform:none;letter-spacing:.02em;font-family:"IBM Plex Mono",monospace}
+
+select,input,textarea,button.btn{
+  font:inherit;font-size:.87rem;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:7px;padding:6px 10px}
+button.btn{cursor:pointer;font-weight:500}
+button.btn:hover{background:var(--sunken)}
+button.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+button.btn.primary:hover{opacity:.9}
+button.btn:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.split{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+@media (min-width:760px){.split{grid-template-columns:280px minmax(0,1fr)}}
+.list{max-height:520px;overflow-y:auto;border:1px solid var(--line);border-radius:8px}
+.list table{font-size:.84rem}
+
+.bucket{border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:12px;background:var(--sunken)}
+.bucket .bhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.bucket .val{font-size:1.3rem;font-weight:600;font-variant-numeric:tabular-nums}
+.bucket .val.unk{color:var(--warn);font-size:1.05rem}
+.grid6{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px;margin-bottom:12px}
+.cell{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 9px}
+.cell .k{font-size:.63rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.cell .v{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;font-size:.9rem}
+.trace{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.trace li{font-size:.83rem;color:var(--muted);padding-left:14px;position:relative;line-height:1.5}
+.trace li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--line-strong)}
+.flags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+
+aside{display:flex;flex-direction:column;gap:16px;align-self:start;position:sticky;top:20px}
+#ask .body{display:flex;flex-direction:column;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.78rem;padding:5px 10px;border:1px solid var(--line-strong);border-radius:999px;background:var(--surface);cursor:pointer;text-align:left}
+.chip:hover{background:var(--sunken)}
+#askOut{font-size:.87rem;white-space:pre-wrap;background:var(--sunken);border:1px solid var(--line);border-radius:7px;padding:11px 12px;min-height:2.6em;max-height:320px;overflow-y:auto}
+#askOut.empty{color:var(--faint)}
+#askIn{width:100%;resize:vertical;min-height:60px}
+.askrow{display:flex;gap:8px}
+.askrow button{flex:1}
+.note{font-size:.78rem;color:var(--faint);line-height:1.45}
+.hidden{display:none!important}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:.8rem;color:var(--faint);max-width:80ch}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">Groupon · multi-entity absence management</span>
+  <h1>Absence Review</h1>
+  <div class="subline">
+    <span>Balances as at <strong id="mAsOf"></strong></span>
+    <span>Ledger opened <strong id="mLedger"></strong></span>
+    <span>Generated <strong id="mGen"></strong></span>
+    <span class="synthetic">Synthetic data — no real employee records</span>
+  </div>
+</header>
+
+<div class="kpis" id="kpis"></div>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-view="recon" aria-selected="true">Reconciliation</button>
+  <button role="tab" data-view="people" aria-selected="false">Balances</button>
+  <button role="tab" data-view="entities" aria-selected="false">Entities</button>
+  <button role="tab" data-view="annual" aria-selected="false">Year ahead</button>
+</nav>
+
+<div class="layout">
+  <main>
+    <!-- RECONCILIATION -->
+    <section id="v-recon">
+      <div class="panel" style="margin-bottom:18px">
+        <div class="head"><h2>Local record vs. recomputed balance</h2></div>
+        <div class="body scroll"><table id="reconSummary"></table></div>
+      </div>
+      <div class="panel">
+        <div class="head">
+          <h2>Findings</h2>
+          <label class="note">Show
+            <select id="sevFilter">
+              <option value="notmatch">everything except matches</option>
+              <option value="material">material only</option>
+              <option value="unresolved">cannot be computed</option>
+              <option value="all">all records</option>
+            </select>
+          </label>
+        </div>
+        <div class="body scroll" style="max-height:560px;overflow-y:auto"><table id="findings"></table></div>
+      </div>
+    </section>
+
+    <!-- PEOPLE -->
+    <section id="v-people" class="hidden">
+      <div class="panel">
+        <div class="head">
+          <h2>Balances and how they were derived</h2>
+          <label class="note">Entity <select id="entFilter"></select></label>
+        </div>
+        <div class="body">
+          <div class="split">
+            <div class="list"><table id="peopleList"></table></div>
+            <div id="personDetail"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENTITIES -->
+    <section id="v-entities" class="hidden">
+      <div class="panel" style="margin-bottom:18px">
+        <div class="head"><h2>Where the boundary was drawn</h2></div>
+        <div class="body scroll"><table id="treatments"></table></div>
+      </div>
+      <div class="panel">
+        <div class="head"><h2>All legal entities</h2></div>
+        <div class="body scroll" style="max-height:520px;overflow-y:auto"><table id="entities"></table></div>
+      </div>
+    </section>
+
+    <!-- ANNUAL -->
+    <section id="v-annual" class="hidden">
+      <div class="panel">
+        <div class="head"><h2>What must be resolved for <span id="aYear"></span></h2>
+          <span class="note">Nothing is applied automatically — this is the list to approve.</span></div>
+        <div class="body scroll" style="max-height:640px;overflow-y:auto"><table id="annual"></table></div>
+      </div>
+    </section>
+  </main>
+
+  <aside>
+    <div class="panel hidden" id="ask">
+      <div class="head"><h2>Ask about this</h2></div>
+      <div class="body">
+        <p class="note">Claude reads what is on screen — the figures and the calculation trace — and explains it in plain language. It does not calculate anything; the numbers come from the engine.</p>
+        <div class="chips" id="askChips"></div>
+        <textarea id="askIn" placeholder="e.g. Why does this person have 26 days and not 20?"></textarea>
+        <div class="askrow">
+          <button class="btn primary" id="askGo">Ask</button>
+          <button class="btn hidden" id="askStop">Stop</button>
+        </div>
+        <div id="askOut" class="empty">Answers appear here.</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="head"><h2>Reading this page</h2></div>
+      <div class="body">
+        <p class="note"><strong>unknown</strong> is a result, not an error: where the law makes entitlement depend on evidence the employer does not hold, the engine refuses to assume a figure.<br><br>
+        <strong>delta</strong> is the local figure minus the recomputed one. Negative means the entity is under-granting.<br><br>
+        Every figure carries the rule that produced it — open a person under <em>Balances</em> to see the trace.</p>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = __PAYLOAD__;
+
+/* ---------- helpers ---------- */
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => (
+  {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num = (v) => (v === null || v === undefined || v === "") ? "—"
+  : (Math.round(Number(v) * 100) / 100).toString();
+const pill = (v) => `<span class="pill ${esc(v)}">${esc(String(v).replace(/_/g," "))}</span>`;
+
+/* ---------- header ---------- */
+$("#mAsOf").textContent = DATA.as_of;
+$("#mLedger").textContent = DATA.ledger_start || "—";
+$("#mGen").textContent = DATA.generated;
+$("#aYear").textContent = DATA.annual_year;
+$("#foot").innerHTML =
+  `Generated by <code>python -m absence dashboard</code>. One file, no server: the data above is baked in at generation time. `
+  + `All records are synthetic and reproducible from <code>scripts/generate_sample_data.py</code>; `
+  + `the entity list comes from Exhibit 21.1 to Groupon's Form 10-K.`;
+
+const S = DATA.summary;
+$("#kpis").innerHTML = [
+  [S.engine_entities + " / " + S.entities, "entities in engine"],
+  [S.engine_share + "%", "of employees covered"],
+  [S.employees, "people computed"],
+  [S.unknown, "reported unknown", "flag"],
+  [S.findings, "reconciliation records"],
+  [S.material, "material differences", "bad"],
+].map(([n, l, cls]) =>
+  `<div class="kpi ${cls || ""}"><div class="n">${esc(n)}</div><div class="l">${esc(l)}</div></div>`).join("");
+
+/* ---------- tabs ---------- */
+const VIEWS = ["recon", "people", "entities", "annual"];
+let view = "recon";
+document.querySelectorAll("nav.tabs button").forEach(b => {
+  b.addEventListener("click", () => {
+    view = b.dataset.view;
+    document.querySelectorAll("nav.tabs button").forEach(x =>
+      x.setAttribute("aria-selected", String(x.dataset.view === view)));
+    VIEWS.forEach(v => $("#v-" + v).classList.toggle("hidden", v !== view));
+    renderChips();
+  });
+});
+
+/* ---------- reconciliation ---------- */
+$("#reconSummary").innerHTML =
+  `<thead><tr><th>Entity</th><th>Local file</th><th class="num">Records</th><th class="num">Match</th>
+   <th class="num">Material</th><th class="num">Unresolved</th><th class="num">Days in dispute</th></tr></thead><tbody>`
+  + DATA.recon.map(r => `<tr>
+      <td><strong>${esc(r.entity)}</strong></td>
+      <td><code>${esc(r.file)}</code></td>
+      <td class="num">${r.comparable}</td>
+      <td class="num">${r.match_rate}%</td>
+      <td class="num">${r.counts.material || 0}</td>
+      <td class="num">${r.counts.unresolved || 0}</td>
+      <td class="num">${num(r.gross)}</td></tr>`).join("") + `</tbody>`;
+
+const SEV_RANK = {material:0, unresolved:1, missing_in_ledger:2, missing_in_export:3, minor:4, match:5};
+function renderFindings() {
+  const mode = $("#sevFilter").value;
+  let rows = DATA.findings.slice().sort((a, b) =>
+    (SEV_RANK[a.severity] - SEV_RANK[b.severity]) || (Math.abs(b.delta || 0) - Math.abs(a.delta || 0)));
+  if (mode === "notmatch") rows = rows.filter(f => f.severity !== "match");
+  else if (mode !== "all") rows = rows.filter(f => f.severity === mode);
+  $("#findings").innerHTML =
+    `<thead><tr><th>Person</th><th>Pot</th><th class="num">Local</th><th class="num">Recomputed</th>
+     <th class="num">Delta</th><th>Severity</th><th>Most likely cause</th></tr></thead><tbody>`
+    + (rows.length ? rows.map(f => `<tr>
+        <td><strong>${esc(f.employee)}</strong><br><span class="note">${esc(f.entity)}</span></td>
+        <td>${esc(f.bucket)}</td>
+        <td class="num">${num(f.reported)}</td>
+        <td class="num">${num(f.computed)}</td>
+        <td class="num">${f.delta === null || f.delta === undefined ? "—" : (f.delta > 0 ? "+" : "") + num(f.delta)}</td>
+        <td>${pill(f.severity)}</td>
+        <td class="wrap">${esc(f.cause)}${f.flags.length ? `<br><span class="note mono">${esc(f.flags.join(" · "))}</span>` : ""}</td>
+      </tr>`).join("") : `<tr><td colspan="7">Nothing in this category.</td></tr>`)
+    + `</tbody>`;
+}
+$("#sevFilter").addEventListener("change", renderFindings);
+renderFindings();
+
+/* ---------- people ---------- */
+const ENTITIES_WITH_PEOPLE = [...new Set(DATA.people.map(p => p.entity))].sort();
+$("#entFilter").innerHTML = `<option value="">all entities</option>`
+  + ENTITIES_WITH_PEOPLE.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join("");
+
+let selected =
+  DATA.people.find(p => p.buckets.some(b => b.flags.includes("SERVICE_EVIDENCE_MISSING")))
+  || DATA.people.find(p => p.buckets.some(b => b.status === "unknown"))
+  || DATA.people[0];
+
+function visiblePeople() {
+  const f = $("#entFilter").value;
+  return DATA.people.filter(p => !f || p.entity === f);
+}
+function renderPeopleList() {
+  const rows = visiblePeople();
+  $("#peopleList").innerHTML =
+    `<thead><tr><th>Person</th><th>Entity</th><th>State</th></tr></thead><tbody>`
+    + rows.map(p => {
+      const unk = p.buckets.some(b => b.status === "unknown");
+      return `<tr class="click ${selected && p.id === selected.id ? "sel" : ""}" data-id="${esc(p.id)}">
+        <td><strong>${esc(p.id)}</strong></td>
+        <td>${esc(p.entity)}${p.region ? " / " + esc(p.region) : ""}</td>
+        <td>${unk ? pill("unknown") : pill("computed")}</td></tr>`;
+    }).join("") + `</tbody>`;
+  $("#peopleList").querySelectorAll("tr.click").forEach(tr =>
+    tr.addEventListener("click", () => {
+      selected = DATA.people.find(p => p.id === tr.dataset.id);
+      renderPeopleList(); renderPerson(); renderChips();
+    }));
+}
+function renderPerson() {
+  const p = selected;
+  if (!p) { $("#personDetail").innerHTML = `<p class="note">Select a person.</p>`; return; }
+  const head = `<div style="margin-bottom:14px">
+      <h3>${esc(p.id)} · ${esc(p.entity)}${p.region ? " / " + esc(p.region) : ""}</h3>
+      <p class="note">Hired ${esc(p.hired)} · leave year ${esc((p.leave_year || [])[0])} to ${esc((p.leave_year || [])[1])}</p>
+    </div>`;
+  const buckets = p.buckets.map(b => `
+    <div class="bucket">
+      <div class="bhead">
+        <h3>${esc(b.label)}</h3>
+        <span class="val ${b.status === "unknown" ? "unk" : ""}">${
+          b.status === "unknown" ? "unknown" : num(b.remaining) + " " + esc(b.unit)}</span>
+      </div>
+      ${b.flags.length ? `<div class="flags">${b.flags.map(f => `<span class="pill flagpill">${esc(f)}</span>`).join("")}</div>` : ""}
+      <div class="grid6">
+        ${[["entitlement", b.entitlement], ["carried in", b.carried_in], ["taken", b.taken],
+           ["booked ahead", b.scheduled], ["lapsed", b.expired], ["payable", b.encashed]]
+          .map(([k, v]) => `<div class="cell"><div class="k">${esc(k)}</div><div class="v">${num(v)}</div></div>`).join("")}
+      </div>
+      <ul class="trace">${b.trace.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+    </div>`).join("");
+  const sick = p.sick ? `<div class="bucket"><div class="bhead"><h3>Sickness ${p.sick.year}</h3>
+      <span class="val">${num(p.sick.employer_paid_days)} / ${num(p.sick.sick_days_total)}</span></div>
+      <p class="note">${num(p.sick.employer_paid_days)} of ${num(p.sick.sick_days_total)} days funded by the employer
+      (band: ${esc(p.sick.band)}); ${num(p.sick.transferred_days)} transferred to ${esc(p.sick.transferred_to)}.</p></div>` : "";
+  $("#personDetail").innerHTML = head + buckets + sick;
+}
+$("#entFilter").addEventListener("change", () => {
+  const vis = visiblePeople();
+  if (!vis.some(p => selected && p.id === selected.id)) selected = vis[0];
+  renderPeopleList(); renderPerson(); renderChips();
+});
+renderPeopleList(); renderPerson();
+
+/* ---------- entities ---------- */
+$("#treatments").innerHTML =
+  `<thead><tr><th>Treatment</th><th class="num">Entities</th><th class="num">People</th><th class="num">Share</th></tr></thead><tbody>`
+  + DATA.treatments.map(t => `<tr><td>${pill(t.treatment)}</td>
+      <td class="num">${t.entities}</td><td class="num">${t.headcount}</td>
+      <td class="num">${t.share}%</td></tr>`).join("") + `</tbody>`;
+
+$("#entities").innerHTML =
+  `<thead><tr><th>ID</th><th>Legal entity</th><th>Country</th><th>Treatment</th><th class="num">People</th><th>Why</th></tr></thead><tbody>`
+  + DATA.entities.map(e => `<tr>
+      <td><code>${esc(e.id)}</code></td><td>${esc(e.name)}</td><td>${esc(e.jurisdiction)}</td>
+      <td>${pill(e.treatment)}</td><td class="num">${e.headcount}</td>
+      <td class="wrap note">${esc(e.rationale)}</td></tr>`).join("") + `</tbody>`;
+
+/* ---------- annual ---------- */
+$("#annual").innerHTML =
+  `<thead><tr><th>Severity</th><th>Area</th><th>Entity</th><th>Item</th><th>Owner</th></tr></thead><tbody>`
+  + DATA.annual.map(a => `<tr>
+      <td>${pill(a.severity)}</td><td>${esc(a.area)}</td><td>${esc(a.entity_id)}</td>
+      <td class="wrap"><strong>${esc(a.subject)}</strong><br><span class="note">${esc(a.detail)}</span></td>
+      <td class="wrap note">${esc(a.owner)}</td></tr>`).join("") + `</tbody>`;
+
+/* ---------- ask panel (only inside a Claude artifact viewer) ---------- */
+function contextFor() {
+  const lines = [];
+  lines.push(`Balances as at ${DATA.as_of}; ledger opened ${DATA.ledger_start}. All data is synthetic.`);
+  lines.push(`${DATA.summary.engine_entities} of ${DATA.summary.entities} legal entities are configured in the engine, covering ${DATA.summary.engine_share}% of employees. ${DATA.summary.employees} people computed, ${DATA.summary.unknown} balances reported as unknown.`);
+  if (view === "people" && selected) {
+    lines.push(`\nCURRENTLY SELECTED PERSON: ${selected.id}, entity ${selected.entity}${selected.region ? " / region " + selected.region : ""}, hired ${selected.hired}.`);
+    selected.buckets.forEach(b => {
+      lines.push(`Pot "${b.label}" (${b.id}): status ${b.status}, remaining ${b.remaining}, entitlement ${b.entitlement}, carried in ${b.carried_in}, taken ${b.taken}, booked ahead ${b.scheduled}, lapsed this year ${b.expired}, payable ${b.encashed}. Flags: ${b.flags.join(", ") || "none"}.`);
+      lines.push(`Calculation trace: ${b.trace.map(t => "- " + t).join(" ")}`);
+    });
+    if (selected.sick) lines.push(`Sickness ${selected.sick.year}: ${selected.sick.sick_days_total} days, ${selected.sick.employer_paid_days} employer-funded (band ${selected.sick.band}), ${selected.sick.transferred_days} to ${selected.sick.transferred_to}.`);
+  } else if (view === "recon") {
+    DATA.recon.forEach(r => lines.push(`\n${r.entity} (file ${r.file}): ${r.comparable} comparable records, ${r.match_rate}% match, ${r.counts.material || 0} material differences, ${r.counts.unresolved || 0} that cannot be computed, ${r.gross} days in dispute.`));
+    lines.push("\nTOP FINDINGS:");
+    DATA.findings.filter(f => f.severity === "material" || f.severity === "unresolved")
+      .slice(0, 18).forEach(f => lines.push(`- ${f.employee} (${f.entity}), pot ${f.bucket}: local ${f.reported}, recomputed ${f.computed}, delta ${f.delta}, ${f.severity}. Cause: ${f.cause}`));
+  } else if (view === "entities") {
+    DATA.treatments.forEach(t => lines.push(`- ${t.treatment}: ${t.entities} entities, ${t.headcount} people, ${t.share}%`));
+    DATA.entities.filter(e => e.treatment !== "dormant")
+      .forEach(e => lines.push(`- ${e.id} ${e.name} (${e.jurisdiction}), ${e.treatment}, ${e.headcount} people. ${e.rationale}`));
+  } else {
+    lines.push(`\nYEAR-AHEAD REVIEW FOR ${DATA.annual_year}:`);
+    DATA.annual.slice(0, 25).forEach(a => lines.push(`- [${a.severity}] ${a.entity_id} ${a.subject} — ${a.detail} (owner: ${a.owner})`));
+  }
+  return lines.join("\n");
+}
+
+const CHIPS = {
+  recon: ["What are the three most expensive problems here?",
+          "Explain the difference for the largest material finding.",
+          "Which of these would you fix first, and why?"],
+  people: ["Why is this balance what it is?",
+           "Explain this in language I could send to the employee.",
+           "What would happen if we got this wrong?"],
+  entities: ["Why are only six entities configured?",
+             "What is the risk of leaving the rest out?"],
+  annual: ["What has to happen before January, and who owns it?",
+           "Which of these blocks a balance from being published?"],
+};
+
+let sampleFn = null, ctl = null;
+function renderChips() {
+  if (!sampleFn) return;
+  $("#askChips").innerHTML = (CHIPS[view] || []).map(q =>
+    `<button class="chip" type="button">${esc(q)}</button>`).join("");
+  $("#askChips").querySelectorAll(".chip").forEach(b =>
+    b.addEventListener("click", () => { $("#askIn").value = b.textContent; ask(); }));
+}
+const ERR = {
+  not_granted: "Claude access was declined for this page, so the explanation is unavailable. Every figure above is unaffected — it comes from the engine.",
+  rate_limited: "Too many questions at once. Wait a moment and ask again.",
+  cancelled: "",
+};
+async function ask() {
+  const q = $("#askIn").value.trim();
+  if (!q || !sampleFn) return;
+  ctl = new AbortController();
+  $("#askGo").disabled = true; $("#askStop").classList.remove("hidden");
+  const out = $("#askOut"); out.classList.remove("empty"); out.textContent = "Thinking…";
+  const prompt =
+    "You are explaining a multi-entity HR absence report to an HR professional. "
+    + "Answer ONLY from the data below. Never invent or recompute a number — if a figure is not in the data, say it is not shown. "
+    + "The data is synthetic test data, so never present it as a finding about a real company. "
+    + "Be concise: at most six sentences, no preamble. Reply in the same language as the question.\n\n"
+    + "=== DATA ON SCREEN ===\n" + contextFor() + "\n=== END DATA ===\n\nQuestion: " + q;
+  try {
+    await sampleFn(prompt, {
+      signal: ctl.signal,
+      onText: ({ text }) => { out.textContent = text; },
+    });
+  } catch (e) {
+    const kept = e && e.text ? e.text : "";
+    out.textContent = kept || ERR[e && e.code] || "The explanation could not be produced. The figures above are unaffected.";
+    if (!kept && e && e.code === "cancelled") { out.textContent = "Stopped."; }
+  } finally {
+    $("#askGo").disabled = false; $("#askStop").classList.add("hidden"); ctl = null;
+  }
+}
+$("#askGo").addEventListener("click", ask);
+$("#askStop").addEventListener("click", () => ctl && ctl.abort());
+$("#askIn").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) ask();
+});
+
+(async () => {
+  try {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    const s = await window.claude.use("sample");
+    if (!s) return;
+    sampleFn = s;
+    $("#ask").classList.remove("hidden");
+    renderChips();
+  } catch (_) { /* page works without it */ }
+})();
+</script>

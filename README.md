@@ -31,7 +31,7 @@ If you would rather not set an environment variable, every command also works
 as `python -c "import sys; sys.path.insert(0,'src'); from absence.cli import main; main()"`,
 or install the package in editable mode with `pip install -e .`.
 
-### The five commands
+### The commands
 
 ```bash
 # The unification boundary: which entities are in the engine, which are not, why
@@ -50,6 +50,9 @@ python -m absence reconcile --html --csv
 
 # What has to change for next year, as a list to approve - nothing is applied
 python -m absence annual-update --year 2027
+
+# One self-contained review page: balances, traces, findings, year-ahead
+python -m absence dashboard
 
 # Employer-funded versus state-funded sick days (Poland: 33 days, or 14 over 50)
 python -m absence sick-pay --entity PL-SSC --year 2026
@@ -103,6 +106,7 @@ src/absence/
   engine.py             balances, as dated lots with expiry per lot
   reconcile.py          local file versus recomputed balance
   annual_update.py      what must change next year, and who owns each item
+  dashboard.py          the self-contained review page (data + template)
   report.py             text, CSV and HTML output
   cli.py                the commands above
 
@@ -110,7 +114,7 @@ data/                   synthetic ledger, opening balances, entity exports
 tests/                  jurisdiction golden cases
 ```
 
-## The three things worth looking at first
+## What to look at first
 
 **`policies/registry.yaml`** is the decision, in executable form. Every one of
 the ~40 subsidiaries in Groupon's Exhibit 21.1 is classified, and the engine
@@ -125,3 +129,8 @@ under-grants six days a year to every graduate.
 **`python -m absence reconcile`** is what makes this deployable before anything
 is migrated. It runs alongside the current process, on the entities' own files,
 and reports where their numbers and the recomputed numbers disagree.
+
+**`python -m absence dashboard`** writes `out/dashboard.html` - one file, no
+server, openable by anyone you send it to. It is a read-only view for the
+phase-0 audience, not an employee self-service portal; DECISION.md section 6
+says why that distinction is load-bearing.

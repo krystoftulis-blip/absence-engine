@@ -166,6 +166,17 @@ total unworkable: two pots, six months and five years. A system that stores one
 number cannot answer "how many days does this person actually lose on 1 July",
 which is the only question worth asking.
 
+**The review page is a file, not an application.** `absence dashboard` writes
+one self-contained HTML file with the figures, the calculation trace and the
+reconciliation findings baked in. That shape follows from who has to open it: a
+country HR lead on a call, a works council member, a lawyer checking a rule.
+None of them will install anything, and a server running on somebody's laptop
+is not a thing you can send to a works council. Opened inside a Claude artifact
+viewer the same file also offers a panel that puts the calculation trace into
+plain language - it reads the trace the engine produced and never computes
+anything, which is the same line section 8 draws. The page renders identically
+without it.
+
 **The annual update produces a diff, never an applied change.** The brief names
 annual updates as a specific pain. `annual-update` finds what has changed -
 missing or unconfirmed holiday calendars, people crossing a seniority threshold
@@ -216,8 +227,12 @@ probably wrong.
 
 ## 6. Known gaps in v1
 
-- No approval workflow or employee interface. The engine computes and
-  reconciles; requesting and approving leave is still wherever it is today.
+- No approval workflow and no employee self-service. `absence dashboard`
+  produces a read-only review page for the phase-0 audience - the HR analyst,
+  the country lead, the lawyer checking a rule - but requesting and approving
+  leave is still wherever it is today. The employee-facing interface belongs in
+  phase 2, after the balances are trusted; building it earlier would be a
+  window onto figures this project has just demonstrated are wrong.
 - No payroll write-back.
 - Poland's three-year limitation period is not modelled (it only matters in
   disputes). India's per-state festival calendars are national holidays only,

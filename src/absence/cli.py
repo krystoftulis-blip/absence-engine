@@ -6,6 +6,7 @@
     python -m absence reconcile [--export pl_urlop] [--html]
     python -m absence annual-update --year 2027
     python -m absence sick-pay  --entity PL-SSC --year 2026
+    python -m absence dashboard
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from typing import List
 
 from . import annual_update as annual
 from . import config as C
+from . import dashboard as dash
 from . import report
 from .calendars import CalendarRepository
 from .data import load_absences, load_employees, load_opening_balances
@@ -201,6 +203,22 @@ def cmd_annual_update(args) -> int:
     return 0
 
 
+def cmd_dashboard(args) -> int:
+    policies, calendars, engine, employees, events = _build()
+    as_of = _as_of(args)
+    payload = dash.build_payload(
+        policies, calendars, engine, employees, events,
+        C.EXPORT_DIR, as_of, args.year,
+    )
+    path = dash.render(payload, os.path.join(C.OUTPUT_DIR, "dashboard.html"))
+    s = payload["summary"]
+    print(f"{s['employees']} people, {s['findings']} reconciliation records, "
+          f"{s['material']} material differences, {s['unknown']} balances unknown")
+    print(f"written: {path}")
+    print("One self-contained file - open it in any browser, or send the file itself.")
+    return 0
+
+
 def cmd_sick_pay(args) -> int:
     _, _, engine, employees, events = _build()
     rows = []
@@ -251,6 +269,11 @@ def main(argv=None) -> int:
     p.add_argument("--year", type=int, required=True)
     p.add_argument("--limit", type=int, default=30)
 
+    p = sub.add_parser("dashboard", parents=[common],
+                       help="generate a single self-contained review page")
+    p.add_argument("--year", type=int, default=2027,
+                   help="year for the year-ahead section (default 2027)")
+
     p = sub.add_parser("sick-pay", parents=[common],
                        help="employer-funded versus state-funded sick days")
     p.add_argument("--entity")
@@ -263,6 +286,7 @@ def main(argv=None) -> int:
         "explain": cmd_explain,
         "reconcile": cmd_reconcile,
         "annual-update": cmd_annual_update,
+        "dashboard": cmd_dashboard,
         "sick-pay": cmd_sick_pay,
     }
     return handlers[args.command](args)
