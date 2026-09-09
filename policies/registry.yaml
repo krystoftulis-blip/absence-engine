@@ -55,6 +55,7 @@ entities:
     jurisdiction: PL
     treatment: engine
     headcount: 520
+    owner_role: "HR administrator, Poland (shared services)"
     rationale: "Largest single population; the 10-K names Poland as a shared services hub."
 
   - entity_id: IN-SSC
@@ -62,6 +63,7 @@ entities:
     jurisdiction: IN
     treatment: engine
     headcount: 380
+    owner_role: "HR administrator, India (shared services)"
     rationale: "Second shared services hub; rules differ by state, so manual tracking is the least reliable here."
 
   - entity_id: US-CORP
@@ -69,6 +71,7 @@ entities:
     jurisdiction: US
     treatment: engine
     headcount: 400
+    owner_role: "HR administrator, North America"
     rationale: "North America segment population; no statutory floor, so the policy itself is the only control."
 
   - entity_id: IE-INTL
@@ -76,6 +79,7 @@ entities:
     jurisdiction: IE
     treatment: engine
     headcount: 120
+    owner_role: "HR Business Partner, UK & Ireland"
     rationale: "International contracting entity for parts of EMEA."
 
   - entity_id: NL-BV
@@ -83,6 +87,7 @@ entities:
     jurisdiction: NL
     treatment: engine
     headcount: 70
+    owner_role: "HR Business Partner, Benelux"
     rationale: "Two-tier statutory/supplementary expiry is the highest-risk rule in the portfolio."
 
   - entity_id: DE-GMBH
@@ -90,6 +95,7 @@ entities:
     jurisdiction: DE
     treatment: engine
     headcount: 60
+    owner_role: "HR Business Partner, DACH"
     rationale: "Works council jurisdiction; needs a defensible audit trail before any change."
 
   # ---------------------------------------------------------- register_only

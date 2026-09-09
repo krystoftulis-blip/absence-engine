@@ -61,6 +61,7 @@ def build_payload(
             "jurisdiction": row.get("jurisdiction"),
             "treatment": treatment,
             "headcount": head,
+            "owner": row.get("owner_role", "") or "unassigned",
             "rationale": row.get("rationale", "") or row.get("owner_role", ""),
         })
     everyone = sum(v[1] for v in totals.values()) or 1
