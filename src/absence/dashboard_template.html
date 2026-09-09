@@ -188,7 +188,10 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
       <div class="panel">
         <div class="head">
           <h2>Balances and how they were derived</h2>
-          <label class="note">Entity <select id="entFilter"></select></label>
+          <span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input id="personSearch" type="search" placeholder="Find a person…" style="width:150px">
+            <label class="note">Entity <select id="entFilter"></select></label>
+          </span>
         </div>
         <div class="body">
           <div class="split">
@@ -222,7 +225,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
   </main>
 
   <aside>
-    <div class="panel hidden" id="ask">
+    <div class="panel" id="ask">
       <div class="head"><h2>Ask about this</h2></div>
       <div class="body">
         <p class="note">Claude reads what is on screen — the figures and the calculation trace — and explains it in plain language. It does not calculate anything; the numbers come from the engine.</p>
@@ -233,6 +236,10 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
           <button class="btn hidden" id="askStop">Stop</button>
         </div>
         <div id="askOut" class="empty">Answers appear here.</div>
+        <p class="note hidden" id="askOff"><strong>Not available in this copy.</strong>
+        The panel asks Claude, which needs the page to be open inside Claude. Opened as a plain
+        file — from disk, or on any other host — every figure and trace above works exactly the
+        same; only this explanation panel is inactive.</p>
       </div>
     </div>
     <div class="panel">
@@ -343,7 +350,11 @@ let selected =
 
 function visiblePeople() {
   const f = $("#entFilter").value;
-  return DATA.people.filter(p => !f || p.entity === f);
+  const q = ($("#personSearch").value || "").trim().toLowerCase();
+  return DATA.people.filter(p =>
+    (!f || p.entity === f) &&
+    (!q || p.id.toLowerCase().includes(q) || p.entity.toLowerCase().includes(q)
+        || (p.region || "").toLowerCase().includes(q)));
 }
 function renderPeopleList() {
   const rows = visiblePeople();
@@ -390,6 +401,11 @@ function renderPerson() {
       (band: ${esc(p.sick.band)}); ${num(p.sick.transferred_days)} transferred to ${esc(p.sick.transferred_to)}.</p></div>` : "";
   $("#personDetail").innerHTML = head + buckets + sick;
 }
+$("#personSearch").addEventListener("input", () => {
+  const vis = visiblePeople();
+  if (vis.length && !vis.some(p => selected && p.id === selected.id)) selected = vis[0];
+  renderPeopleList(); renderPerson(); renderChips();
+});
 $("#entFilter").addEventListener("change", () => {
   const vis = visiblePeople();
   if (!vis.some(p => selected && p.id === selected.id)) selected = vis[0];
@@ -444,6 +460,14 @@ function contextFor() {
     lines.push(`\nYEAR-AHEAD REVIEW FOR ${DATA.annual_year}:`);
     DATA.annual.slice(0, 25).forEach(a => lines.push(`- [${a.severity}] ${a.entity_id} ${a.subject} — ${a.detail} (owner: ${a.owner})`));
   }
+  lines.push("\nROSTER — every person computed, with the balance of each pot. "
+    + "Use this to answer questions about anyone, from any tab. "
+    + "Full calculation traces are only included for the selected person above.");
+  DATA.people.forEach(p => {
+    const pots = p.buckets.map(b => `${b.id}=${b.status === "unknown" ? "UNKNOWN" : b.remaining + " " + b.unit}`
+      + (b.flags.length ? " [" + b.flags.join(",") + "]" : "")).join("; ");
+    lines.push(`- ${p.id} (${p.entity}${p.region ? "/" + p.region : ""}, hired ${p.hired}): ${pots}`);
+  });
   return lines.join("\n");
 }
 
@@ -451,7 +475,8 @@ const CHIPS = {
   recon: ["What are the three most expensive problems here?",
           "Explain the difference for the largest material finding.",
           "Which of these would you fix first, and why?"],
-  people: ["Why is this balance what it is?",
+  people: ["How many days does PL-0010 have left?",
+           "Why is this balance what it is?",
            "Explain this in language I could send to the employee.",
            "What would happen if we got this wrong?"],
   entities: ["Why are only six entities configured?",
@@ -483,11 +508,15 @@ async function ask() {
     "You are explaining a multi-entity HR absence report to an HR professional. "
     + "Answer ONLY from the data below. Never invent or recompute a number — if a figure is not in the data, say it is not shown. "
     + "The data is synthetic test data, so never present it as a finding about a real company. "
+    + "If the question names a person, look them up in the ROSTER and give their figure. "
+    + "A full calculation trace is only available for the person currently selected — if one is "
+    + "asked for somebody else, give the figure and say the trace needs that person opened. "
     + "Be concise: at most six sentences, no preamble. Reply in the same language as the question.\n\n"
     + "=== DATA ON SCREEN ===\n" + contextFor() + "\n=== END DATA ===\n\nQuestion: " + q;
   try {
     await sampleFn(prompt, {
       signal: ctl.signal,
+      modelTier: "quick",
       onText: ({ text }) => { out.textContent = text; },
     });
   } catch (e) {
@@ -504,14 +533,20 @@ $("#askIn").addEventListener("keydown", (e) => {
   if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) ask();
 });
 
+function askUnavailable() {
+  $("#askChips").classList.add("hidden");
+  $("#askIn").classList.add("hidden");
+  $("#askGo").classList.add("hidden");
+  $("#askOut").classList.add("hidden");
+  $("#askOff").classList.remove("hidden");
+}
 (async () => {
   try {
-    if (!window.claude || typeof window.claude.use !== "function") return;
+    if (!window.claude || typeof window.claude.use !== "function") return askUnavailable();
     const s = await window.claude.use("sample");
-    if (!s) return;
+    if (!s) return askUnavailable();
     sampleFn = s;
-    $("#ask").classList.remove("hidden");
     renderChips();
-  } catch (_) { /* page works without it */ }
+  } catch (_) { askUnavailable(); }
 })();
 </script>
