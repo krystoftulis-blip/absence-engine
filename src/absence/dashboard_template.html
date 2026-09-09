@@ -49,10 +49,17 @@ header.top{display:flex;flex-direction:column;gap:10px;padding-bottom:20px;borde
 .subline{color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:6px 18px}
 .synthetic{color:var(--warn);font-weight:500}
 
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;margin:20px 0 4px}
-.kpi{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:12px 14px;box-shadow:var(--shadow)}
-.kpi .n{font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
-.kpi .l{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-top:3px}
+.lead{font-size:1.02rem;color:var(--muted);max-width:74ch;line-height:1.6}
+.lead strong{color:var(--ink);font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:22px 0 4px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:14px 16px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:2px}
+.kpi .n{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .l{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.kpi .d{font-size:.82rem;color:var(--muted);line-height:1.45;margin-top:4px}
+.lede{font-size:.88rem;color:var(--muted);max-width:78ch;line-height:1.5;margin-top:6px}
+.panel .head{align-items:flex-start}
+.panel .head .ht{display:flex;flex-direction:column;min-width:0;flex:1}
 .kpi.flag .n{color:var(--warn)}
 .kpi.bad .n{color:var(--bad)}
 
@@ -140,8 +147,14 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
 <div class="wrap">
 
 <header class="top">
-  <span class="eyebrow">Groupon · multi-entity absence management</span>
+  <span class="eyebrow">Groupon · absence management across legal entities</span>
   <h1>Absence Review</h1>
+  <p class="lead">Every country has its own leave law, and today every entity tracks it in its own
+  spreadsheet — so nobody can say whether the numbers are right. This page
+  <strong>recomputes every balance from each entity's own law</strong>, shows
+  <strong>which rule produced each figure</strong>, and points at
+  <strong>where today's records disagree and probably why</strong>. It is one file: no system to
+  log into, nothing to install.</p>
   <div class="subline">
     <span>Balances as at <strong id="mAsOf"></strong></span>
     <span>Ledger opened <strong id="mLedger"></strong></span>
@@ -153,7 +166,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
 <div class="kpis" id="kpis"></div>
 
 <nav class="tabs" role="tablist">
-  <button role="tab" data-view="recon" aria-selected="true">Reconciliation</button>
+  <button role="tab" data-view="recon" aria-selected="true">Findings</button>
   <button role="tab" data-view="people" aria-selected="false">Balances</button>
   <button role="tab" data-view="entities" aria-selected="false">Entities</button>
   <button role="tab" data-view="annual" aria-selected="false">Year ahead</button>
@@ -164,12 +177,17 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
     <!-- RECONCILIATION -->
     <section id="v-recon">
       <div class="panel" style="margin-bottom:18px">
-        <div class="head"><h2>Local record vs. recomputed balance</h2></div>
+        <div class="head"><div class="ht"><h2>What each entity's spreadsheet says, next to the law</h2>
+          <p class="lede">The tool reads the file the entity keeps today — in its own format and its own language —
+          recomputes the same people, and reports the gap. It runs alongside the current process and changes nothing,
+          so it can be used before anything is migrated.</p></div></div>
         <div class="body scroll"><table id="reconSummary"></table></div>
       </div>
       <div class="panel">
         <div class="head">
-          <h2>Findings</h2>
+          <div class="ht"><h2>Where the numbers disagree</h2>
+          <p class="lede">A negative delta means the entity is giving people less than they are owed.
+          The last column is the point: an administrator cannot act on "−6", but can act on "this person is still on the 20-day tier".</p></div>
           <label class="note">Show
             <select id="sevFilter">
               <option value="notmatch">everything except matches</option>
@@ -187,7 +205,9 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
     <section id="v-people" class="hidden">
       <div class="panel">
         <div class="head">
-          <h2>Balances and how they were derived</h2>
+          <div class="ht"><h2>Every figure, and the rule that produced it</h2>
+          <p class="lede">Open anyone to see the derivation in the order the law applies it — this is what HR shows an employee
+          who disputes a balance, and what an auditor asks for. Some people show <em>unknown</em>: that is the engine refusing to guess.</p></div>
           <span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <input id="personSearch" type="search" placeholder="Find a person…" style="width:150px">
             <label class="note">Entity <select id="entFilter"></select></label>
@@ -205,7 +225,9 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
     <!-- ENTITIES -->
     <section id="v-entities" class="hidden">
       <div class="panel" style="margin-bottom:18px">
-        <div class="head"><h2>Where the boundary was drawn</h2></div>
+        <div class="head"><div class="ht"><h2>Which entities are in, and why the rest are not</h2>
+          <p class="lede">Groupon files about forty subsidiaries but employs 1,734 people, concentrated in a handful of them.
+          Configuring all forty would mean forty legal reviews a year to serve a few hundred people.</p></div></div>
         <div class="body scroll"><table id="treatments"></table></div>
       </div>
       <div class="panel">
@@ -217,8 +239,10 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
     <!-- ANNUAL -->
     <section id="v-annual" class="hidden">
       <div class="panel">
-        <div class="head"><h2>What must be resolved for <span id="aYear"></span></h2>
-          <span class="note">Nothing is applied automatically — this is the list to approve.</span></div>
+        <div class="head"><div class="ht"><h2>What must be resolved before <span id="aYear"></span></h2>
+          <p class="lede">The annual update — holiday calendars, people crossing a seniority threshold, rules due for legal review —
+          turned from "rewrite the rules" into a list with a named owner per item. <strong>Nothing is applied automatically:</strong>
+          a legal change reaching 500 people's balances has to pass a human.</p></div></div>
         <div class="body scroll" style="max-height:640px;overflow-y:auto"><table id="annual"></table></div>
       </div>
     </section>
@@ -243,11 +267,14 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
       </div>
     </div>
     <div class="panel">
-      <div class="head"><h2>Reading this page</h2></div>
+      <div class="head"><h2>What this changes</h2></div>
       <div class="body">
-        <p class="note"><strong>unknown</strong> is a result, not an error: where the law makes entitlement depend on evidence the employer does not hold, the engine refuses to assume a figure.<br><br>
-        <strong>delta</strong> is the local figure minus the recomputed one. Negative means the entity is under-granting.<br><br>
-        Every figure carries the rule that produced it — open a person under <em>Balances</em> to see the trace.</p>
+        <p class="note">Today a balance is a number in a spreadsheet that nobody can check. Here it is a
+        figure with the article of law that produced it attached, and a note wherever the local record disagrees.<br><br>
+        <strong>unknown</strong> is a result, not a failure: where entitlement depends on documents the employer
+        does not hold, the engine says so rather than assuming the lower figure — which is how an employer
+        quietly under-grants six days a year for years.<br><br>
+        <strong>delta</strong> is the local figure minus the recomputed one. Negative means the entity is under-granting.</p>
       </div>
     </div>
   </aside>
@@ -279,14 +306,16 @@ $("#foot").innerHTML =
 
 const S = DATA.summary;
 $("#kpis").innerHTML = [
-  [S.engine_entities + " / " + S.entities, "entities in engine"],
-  [S.engine_share + "%", "of employees covered"],
-  [S.employees, "people computed"],
-  [S.unknown, "reported unknown", "flag"],
-  [S.findings, "reconciliation records"],
-  [S.material, "material differences", "bad"],
-].map(([n, l, cls]) =>
-  `<div class="kpi ${cls || ""}"><div class="n">${esc(n)}</div><div class="l">${esc(l)}</div></div>`).join("");
+  [S.material, "differences found", "bad",
+   "Places where an entity's own spreadsheet and the recomputed figure disagree by more than half a day. Each one names its most likely cause."],
+  [S.unknown, "balances refused", "flag",
+   "The law makes these depend on documents the employer does not hold. The engine reports them as unknown instead of quietly assuming the lower figure."],
+  [S.employees, "people recomputed", "",
+   "Every balance derived from the entity's law and traceable back to the article that produced it."],
+  [S.engine_entities + " of " + S.entities, "entities configured", "",
+   "The six that carry " + S.engine_share + "% of employees. The rest are named, owned and reviewed annually rather than left unnoticed."],
+].map(([n, l, cls, d]) =>
+  `<div class="kpi ${cls || ""}"><div class="n">${esc(n)}</div><div class="l">${esc(l)}</div><div class="d">${esc(d)}</div></div>`).join("");
 
 /* ---------- tabs ---------- */
 const VIEWS = ["recon", "people", "entities", "annual"];
@@ -472,17 +501,16 @@ function contextFor() {
 }
 
 const CHIPS = {
-  recon: ["What are the three most expensive problems here?",
-          "Explain the difference for the largest material finding.",
-          "Which of these would you fix first, and why?"],
+  recon: ["Summarise these findings for my head of HR.",
+          "Which entity has the worst match rate, and what is causing it?",
+          "How many days are we under-granting in total?"],
   people: ["How many days does PL-0010 have left?",
-           "Why is this balance what it is?",
-           "Explain this in language I could send to the employee.",
-           "What would happen if we got this wrong?"],
+           "Why does this person get this entitlement and not the lower one?",
+           "Write an explanation of this balance I could send to the employee."],
   entities: ["Why are only six entities configured?",
-             "What is the risk of leaving the rest out?"],
-  annual: ["What has to happen before January, and who owns it?",
-           "Which of these blocks a balance from being published?"],
+             "Which entities have employees but no configured rules, and who owns them?"],
+  annual: ["What has to be done before January, and by whom?",
+           "Which of these stop a balance from being published?"],
 };
 
 let sampleFn = null, ctl = null;
