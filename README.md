@@ -74,13 +74,15 @@ past dates, using the policy version that was in force then.
 python -m unittest discover -s tests -v
 ```
 
-35 tests, no test framework to install. They also run on every push, on Python
-3.9 and 3.12, alongside a check that the sample data is still reproducible from
-its seed and that every command still runs - see `.github/workflows/tests.yml`. They are written as jurisdiction golden
+35 tests, no test framework to install. They are written as jurisdiction golden
 cases (Poland's seniority tiers, India's state variants, the Dutch two-clock
 expiry, Ireland's April leave year, California's ban on forfeiture) rather than
 as unit tests of functions, because those are the statements that would have to
 be defended to an auditor.
+
+They also run on every push, on Python 3.9 and 3.12, alongside a check that the
+sample data still reproduces from its seed and that every command still runs -
+see `.github/workflows/tests.yml`.
 
 ### Regenerating the data
 

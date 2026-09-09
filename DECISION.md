@@ -81,7 +81,10 @@ Sources for all of the above are listed at the end.
 **Global - one version for the whole company:**
 the absence event model and taxonomy; the balance engine; the audit trail and
 the explanation of how each number was derived; the reconciliation and reporting
-layer; the approval workflow and the employee-facing experience.
+layer; and, once they exist, the approval workflow and the employee-facing
+experience. Those last two are target design, not v1 - nothing in this build
+requests or approves leave, and section 6 says why that is deliberate rather
+than unfinished.
 
 **Local - but as versioned data, not as spreadsheets or local knowledge:**
 accrual method and amounts; entitlement tiers and what counts towards them;
@@ -151,7 +154,7 @@ enforceable, entitlement under- or over-granted. Those follow from the policies,
 not from a list of expected mistakes. The tool is not pattern-matching a set of
 planted errors; it is recomputing from the law and reporting the difference.
 
-Four design choices inside the build are worth defending explicitly.
+Five design choices inside the build are worth defending explicitly.
 
 **Rules as YAML, not as code or database rows.** A policy change is a legal
 change and needs sign-off from someone who is not an engineer. A YAML diff is
@@ -219,7 +222,8 @@ probably wrong.
    employee extract. Without that there is no ledger and nothing to reconcile.
 4. **No existing global HRIS.** If Groupon already runs Workday or similar, this
    should be a layer beside it - the policy files and the reconciliation stay,
-   the ledger becomes a read from that system. See section 6.
+   the ledger becomes a read from that system. This is the assumption I am least
+   confident in; see section 7.
 5. **Working patterns are Monday–Friday**, with part-time modelled as a fraction
    of a five-day week. Real schedules change deductions for part-timers.
 6. **Ireland uses contracted hours as a proxy** for hours actually worked in the
@@ -257,12 +261,14 @@ probably wrong.
   a named owner and a review cadence in `registry.yaml`, but nothing produces the
   attestation they are supposed to sign each year. The boundary is drawn and only
   one side of it is built.
-- `absence snapshot` records what was published, with a digest, so a disputed
-  figure can be shown as it was given - which is a different question from what
-  is true today, and the one that decides a dispute. It is a record, not an
-  immutable one: anyone who can reach the file can rewrite it and recompute the
-  digest. Real assurance needs append-only storage with the digest held
-  somewhere the same person cannot reach.
+- Nothing guarantees the record of what was published cannot be altered.
+  `absence snapshot` writes every balance as it was given, with the policy
+  version behind each one and a digest of the file - which answers the question
+  a dispute actually turns on, namely what this person was told rather than what
+  is true now. But a file in an output directory is a record, not an immutable
+  one: anyone who can reach it can rewrite it and recompute the digest. Real
+  assurance needs append-only storage with the digest held somewhere the same
+  person cannot reach.
 - Poland's three-year limitation period is not modelled (it only matters in
   disputes). India's per-state festival calendars are national holidays only,
   and are flagged as unconfirmed rather than quietly incomplete.
@@ -280,9 +286,13 @@ The brief asks for a specific correction, so here is where I would look first.
 
 1. **The systems assumption.** If a global HRIS already exists, building a
    standalone ledger is the wrong shape. The policy-as-data layer and the
-   reconciliation survive that; the ledger does not. This is the assumption I
-   would most like corrected, and I did not ask about it because it did not feel
-   like a question I could ask without also asking you to make my decision.
+   reconciliation survive that; the ledger does not - it becomes a read from
+   that system instead. This is the assumption I would most like corrected, and
+   I should have asked. Whether Groupon runs Workday is a question of fact, not
+   a question of scope; the brief invited questions and I treated this one as
+   though answering it would have made my decision for me, which it would not
+   have. That was my error, and it is the kind I would rather make visible here
+   than have found.
 2. **The boundary may be drawn too tight.** Nine entities with roughly 200 people
    sit in `register_only`. If several share a jurisdiction with an engine entity,
    configuring them costs almost nothing and my "small entities are cheaper left
