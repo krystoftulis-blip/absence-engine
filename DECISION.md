@@ -220,10 +220,10 @@ probably wrong.
    market exits. Some "dormant" entities may still employ people.
 3. **There is a payroll system of record per entity** that can produce an
    employee extract. Without that there is no ledger and nothing to reconcile.
-4. **No existing global HRIS.** If Groupon already runs Workday or similar, this
-   should be a layer beside it - the policy files and the reconciliation stay,
-   the ledger becomes a read from that system. This is the assumption I am least
-   confident in; see section 7.
+4. **No existing global system of record for absence.** If there is one, the
+   ledger in this build is the wrong layer: the policy files and the
+   reconciliation stay as they are, and the ledger becomes a read from that
+   system instead of a thing of its own.
 5. **Working patterns are Monday–Friday**, with part-time modelled as a fraction
    of a five-day week. Real schedules change deductions for part-timers.
 6. **Ireland uses contracted hours as a proxy** for hours actually worked in the
@@ -284,15 +284,11 @@ probably wrong.
 
 The brief asks for a specific correction, so here is where I would look first.
 
-1. **The systems assumption.** If a global HRIS already exists, building a
-   standalone ledger is the wrong shape. The policy-as-data layer and the
-   reconciliation survive that; the ledger does not - it becomes a read from
-   that system instead. This is the assumption I would most like corrected, and
-   I should have asked. Whether Groupon runs Workday is a question of fact, not
-   a question of scope; the brief invited questions and I treated this one as
-   though answering it would have made my decision for me, which it would not
-   have. That was my error, and it is the kind I would rather make visible here
-   than have found.
+1. **The tool has never met a real file.** Every figure here comes from data I
+   generated. The error classes the reconciliation reports are the ones the
+   policies imply; they may not be the ones an entity's spreadsheet actually
+   produces. The first run against a live file may surface a whole category I
+   have not modelled, and the match rate may look nothing like this one.
 2. **The boundary may be drawn too tight.** Nine entities with roughly 200 people
    sit in `register_only`. If several share a jurisdiction with an engine entity,
    configuring them costs almost nothing and my "small entities are cheaper left
