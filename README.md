@@ -1,5 +1,7 @@
 # Absence engine
 
+[![tests](https://github.com/krystoftulis-blip/absence-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/krystoftulis-blip/absence-engine/actions/workflows/tests.yml)
+
 A first working version of unified absence management across Groupon's legal
 entities. One calculation engine and one data model for every entity; the rules
 themselves stay local, as versioned, reviewable data.
@@ -54,6 +56,10 @@ python -m absence annual-update --year 2027
 # One self-contained review page: balances, traces, findings, year-ahead
 python -m absence dashboard
 
+# Record the balances as published, with a digest that shows the file is intact
+python -m absence snapshot --label march-payroll
+python -m absence snapshot --verify
+
 # Employer-funded versus state-funded sick days (Poland: 33 days, or 14 over 50)
 python -m absence sick-pay --entity PL-SSC --year 2026
 ```
@@ -68,7 +74,9 @@ past dates, using the policy version that was in force then.
 python -m unittest discover -s tests -v
 ```
 
-35 tests, no test framework to install. They are written as jurisdiction golden
+35 tests, no test framework to install. They also run on every push, on Python
+3.9 and 3.12, alongside a check that the sample data is still reproducible from
+its seed and that every command still runs - see `.github/workflows/tests.yml`. They are written as jurisdiction golden
 cases (Poland's seniority tiers, India's state variants, the Dutch two-clock
 expiry, Ireland's April leave year, California's ban on forfeiture) rather than
 as unit tests of functions, because those are the statements that would have to
@@ -107,6 +115,7 @@ src/absence/
   reconcile.py          local file versus recomputed balance
   annual_update.py      what must change next year, and who owns each item
   dashboard.py          the self-contained review page (data + template)
+  snapshot.py           what was published, with a digest - not what is true now
   report.py             text, CSV and HTML output
   cli.py                the commands above
 

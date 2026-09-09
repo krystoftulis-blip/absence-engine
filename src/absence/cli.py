@@ -7,6 +7,7 @@
     python -m absence annual-update --year 2027
     python -m absence sick-pay  --entity PL-SSC --year 2026
     python -m absence dashboard
+    python -m absence snapshot [--label march-payroll] [--verify]
 """
 
 from __future__ import annotations
@@ -21,6 +22,7 @@ from . import annual_update as annual
 from . import config as C
 from . import dashboard as dash
 from . import report
+from . import snapshot as snap
 from .calendars import CalendarRepository
 from .data import load_absences, load_employees, load_opening_balances
 from .engine import AbsenceEngine
@@ -219,6 +221,29 @@ def cmd_dashboard(args) -> int:
     return 0
 
 
+def cmd_snapshot(args) -> int:
+    policies, _, engine, employees, events = _build()
+    as_of = _as_of(args)
+    if args.verify:
+        rows = snap.verify(os.path.join(C.OUTPUT_DIR, "snapshots"))
+        if not rows:
+            print("no snapshots recorded yet")
+            return 0
+        print(report.table(rows))
+        altered = [r for r in rows if r["state"] != "intact"]
+        print(f"\n{len(rows)} snapshot(s), {len(altered)} no longer matching their digest.")
+        return 1 if altered else 0
+    m = snap.take(policies, engine, employees, events, as_of, C.OUTPUT_DIR, args.label or "")
+    print(f"snapshot {m['snapshot']}")
+    print(f"  {m['people']} people, {m['rows']} rows, {m['unknown_balances']} unknown")
+    print(f"  sha256 {m['sha256']}")
+    print(f"  written: {m['path']}")
+    print("\nThis records what was published, not what is true today - the engine can "
+          "recompute any past date on its own. See src/absence/snapshot.py for the "
+          "storage guarantee this does and does not give you.")
+    return 0
+
+
 def cmd_sick_pay(args) -> int:
     _, _, engine, employees, events = _build()
     rows = []
@@ -274,6 +299,12 @@ def main(argv=None) -> int:
     p.add_argument("--year", type=int, default=2027,
                    help="year for the year-ahead section (default 2027)")
 
+    p = sub.add_parser("snapshot", parents=[common],
+                       help="record the balances as published, with a digest")
+    p.add_argument("--label", help="short label for this snapshot, e.g. a payroll run")
+    p.add_argument("--verify", action="store_true",
+                   help="re-digest every recorded snapshot instead of taking one")
+
     p = sub.add_parser("sick-pay", parents=[common],
                        help="employer-funded versus state-funded sick days")
     p.add_argument("--entity")
@@ -287,6 +318,7 @@ def main(argv=None) -> int:
         "reconcile": cmd_reconcile,
         "annual-update": cmd_annual_update,
         "dashboard": cmd_dashboard,
+        "snapshot": cmd_snapshot,
         "sick-pay": cmd_sick_pay,
     }
     return handlers[args.command](args)

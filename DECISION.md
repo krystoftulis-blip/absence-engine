@@ -142,6 +142,15 @@ on the local sheets), and 7 records where the engine refuses to produce a number
 at all. Those figures describe the seeded dataset, not Groupon - the deliverable
 is the method, not the number.
 
+The obvious objection to a seeded dataset is that the tool finds the errors it
+was told to look for. It is worth being precise about how much of that is true:
+of the 16 material differences, **2 match a pattern named in the export mapping;
+the other 14 were characterised by the general rules** - days that have already
+lapsed still sitting on the sheet, days written off where the forfeiture is not
+enforceable, entitlement under- or over-granted. Those follow from the policies,
+not from a list of expected mistakes. The tool is not pattern-matching a set of
+planted errors; it is recomputing from the law and reporting the difference.
+
 Four design choices inside the build are worth defending explicitly.
 
 **Rules as YAML, not as code or database rows.** A policy change is a legal
@@ -191,10 +200,19 @@ what changed) is automated; the judgement (approving it) is not.
 These are assumptions, not findings. Each one is falsifiable and several are
 probably wrong.
 
-1. **Per-entity headcount.** The 10-K gives only a North America / International
-   split. The figures in `registry.yaml` are working assumptions. They drive the
-   engine/register/dormant classification, so if they are wrong the boundary
-   moves.
+1. **Per-entity headcount.** The 10-K gives only a North America /
+   International split, so the figures in `registry.yaml` are working
+   assumptions, and they drive the engine/register/dormant classification - if
+   they are wrong, the boundary moves. They are, however, *obtainable*, and it
+   is worth being exact about that rather than treating them as unknowable:
+   several of these jurisdictions require the average number of employees to be
+   disclosed in the notes to the statutory accounts, and those accounts are
+   public. In the United Kingdom that is Companies Act 2006 s.411, filed at
+   Companies House; Ireland files at the CRO, the Netherlands at the KVK,
+   Germany in the Bundesanzeiger, Poland in the KRS. Entities filing abridged
+   accounts may omit the note, so coverage would be partial - but partial
+   evidence beats a whole estimate, and this is the first thing I would do with
+   another day.
 2. **The dormant classification.** I inferred it from entity names and Groupon's
    market exits. Some "dormant" entities may still employ people.
 3. **There is a payroll system of record per entity** that can produce an
@@ -217,7 +235,7 @@ probably wrong.
 
 | # | To verify | How |
 |---|---|---|
-| 1 | Real headcount by legal entity and by work location | Payroll extract per entity; India needs state of work, Germany needs Bundesland |
+| 1 | Real headcount by legal entity and by work location | Internally, a payroll extract per entity (India needs state of work, Germany needs Bundesland). Externally and without asking anyone, the average employee numbers in each entity's filed statutory accounts: Companies House, CRO, KVK, Bundesanzeiger, KRS |
 | 2 | Every policy file, rule by rule | Local counsel per jurisdiction signs the file; the `reviewed_by` and `review_due` fields exist to be filled in, and `annual-update` flags them as blockers until they are |
 | 3 | Which entities actually employ people | Company secretarial confirmation against Exhibit 21.1 |
 | 4 | Opening balances | Each entity signs off the balance at cut-over; unsigned means UNKNOWN, and that backlog is real work |
@@ -233,7 +251,18 @@ probably wrong.
   leave is still wherever it is today. The employee-facing interface belongs in
   phase 2, after the balances are trusted; building it earlier would be a
   window onto figures this project has just demonstrated are wrong.
-- No payroll write-back.
+- No payroll write-back. The engine computes the days that must be paid out on
+  separation or above a statutory cap, but nothing carries that figure into pay.
+- The `register_only` tier is a decision without an artefact. Nine entities have
+  a named owner and a review cadence in `registry.yaml`, but nothing produces the
+  attestation they are supposed to sign each year. The boundary is drawn and only
+  one side of it is built.
+- `absence snapshot` records what was published, with a digest, so a disputed
+  figure can be shown as it was given - which is a different question from what
+  is true today, and the one that decides a dispute. It is a record, not an
+  immutable one: anyone who can reach the file can rewrite it and recompute the
+  digest. Real assurance needs append-only storage with the digest held
+  somewhere the same person cannot reach.
 - Poland's three-year limitation period is not modelled (it only matters in
   disputes). India's per-state festival calendars are national holidays only,
   and are flagged as unconfirmed rather than quietly incomplete.

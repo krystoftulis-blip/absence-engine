@@ -1,0 +1,53 @@
+name: tests
+
+# The test suite is the compliance evidence for this project: each test is a
+# statement about what a jurisdiction's law requires. Running it on every push
+# is the difference between "the rules were checked once" and "the rules are
+# checked continuously" - so this workflow is part of the argument, not
+# housekeeping.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.9 is the floor the project claims; 3.12 guards against drift.
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install the single runtime dependency
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+
+      - name: Run the jurisdiction golden cases
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+
+      - name: Sample data must be reproducible from the seed
+        # If the generator no longer produces the files in the repository, the
+        # figures quoted in DECISION.md are no longer checkable by a reader.
+        run: |
+          python scripts/generate_sample_data.py
+          git diff --exit-code -- data/
+
+      - name: Every command must actually run
+        run: |
+          export PYTHONPATH=src
+          python -m absence registry
+          python -m absence balance --entity PL-SSC
+          python -m absence explain --employee PL-0002
+          python -m absence reconcile --csv --html
+          python -m absence annual-update --year 2027
+          python -m absence sick-pay --entity PL-SSC --year 2026
+          python -m absence dashboard
+          python -m absence snapshot --label ci
