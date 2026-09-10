@@ -3,7 +3,7 @@
 Deliberately NOT an application. There is no login, no approval flow and no
 employee self-service, because in phase 0 the user is an HR analyst reading a
 reconciliation, not an employee booking leave (see DECISION.md section 6 and
-CHANGE_PLAN.md section 3). What that person needs is to see the numbers, see
+CHANGE_PLAN.md section 4). What that person needs is to see the numbers, see
 why each number is what it is, and see where the local record disagrees.
 
 It is one HTML file with the data baked in, rather than a web application,
