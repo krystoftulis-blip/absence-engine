@@ -3,14 +3,14 @@
 ## 1. What this change is, and the norm it is meant to establish
 
 This is not an efficiency programme. If it were, it would not be worth doing:
-the manual effort it removes is under one full-time role across a company of
-1,734 people, and section 6 says so with the arithmetic attached.
+the manual effort it removes is under one full-time role across 1,734 people, and
+section 6 says so with the arithmetic attached.
 
-What it is, is the first process in this company rebuilt so that the rules are
-written down, the calculation is reproducible, and the reason for any number can
-be shown to the person it applies to. Absence was chosen because it is small
-enough to fail safely and legally consequential enough that getting it right
-matters. No revenue depends on it. That is the point.
+It is the first process in this company rebuilt so that the rules are written
+down, the calculation is reproducible, and the reason for any number can be shown
+to the person it applies to. Absence was chosen because it is small enough to
+fail safely and legally consequential enough that getting it right matters. No
+revenue depends on it. That is the point.
 
 The claim made to the organisation is therefore narrow, and stays narrow:
 
@@ -34,8 +34,7 @@ Both are cheap to state and expensive to honour, which is why they are stated
 before the first finding exists rather than after.
 
 Two constraints follow. **No promise is made that cannot be kept** — no headcount
-case, no "HR becomes strategic"; the people maintaining these spreadsheets have
-seen systems projects before. And **the success measure is not the absence
+case, no "HR becomes strategic". And **the success measure is not the absence
 numbers** (section 6).
 
 ### Who is affected, and how much
@@ -67,37 +66,31 @@ answer differs sharply.
 | Country HR leads / HRBPs | Easy | Mixed — reads as headquarters taking their process | Low — few have signed off a rule as *written text* before | **Gap** — signing a policy file needs counsel time nobody has budgeted | Moderate — the `review_due` date is the mechanism |
 | Managers | Easy | Neutral | Low — need one page, not training | Fine | n/a |
 | Works councils (NL, DE) | Formal, by law | Neutral at best; their job is to test it | **Gap** — need to understand what the system does and does not observe | n/a | The agreement itself |
-| Employees | Low need | n/a | Low | n/a | n/a |
-| HR leadership / sponsor | Easy | Present | Moderate | Moderate | **Gap** — a slow project with no employee-facing output for two quarters loses attention before it produces a result |
+| HR leadership / sponsor (CHRO) | Easy | Present | Moderate | Moderate | **Gap** — a slow project with no employee-facing output for two quarters loses attention before it produces a result |
 
-**Awareness is close to free here; Desire is not.** Those are different claims.
-Groupon's leadership has taken a public, repeated position that AI fluency is
-expected of everyone rather than delegated to a function, so I do not have to
-spend the first month arguing that using AI is legitimate — which is a large
-share of what a change plan usually spends its energy on. But that is a stance
-on direction, not a permission slip: it settles nothing about AI and employee
-data (hence section 3), and it has no bearing on whether one administrator
-volunteers the exceptions she has handled by hand for six years. Her desire is
-the hardest problem in this plan.
-
-So the standard playbook — town hall, vision deck, awareness campaign — would
-aim at the element that is already fine. This plan spends almost nothing there.
+**Awareness is close to free here; Desire is not.** Groupon's leadership has
+taken a public position that AI fluency is expected of everyone rather than
+delegated to a function, so I need not spend the first month arguing that using
+AI is legitimate — a large share of what a change plan usually spends its energy
+on. But that is a stance on direction, not a permission slip: it settles nothing
+about AI and employee data (hence section 3), and it has no bearing on whether
+one administrator volunteers the exceptions she has handled by hand for six
+years. Her desire is the hardest problem here, and the standard playbook — town
+hall, vision deck, awareness campaign — aims at the element that is already fine.
 
 **Ability is budget and time, not enthusiasm.** A country HR lead cannot sign a
-policy file without counsel, and counsel is not free (section 6 sizes it). Unfunded
-in week 1, the files go unsigned and the engine runs on rules nobody approved —
-worse than the spreadsheet it replaced.
+policy file without counsel, and counsel is not free (section 6 sizes it).
+Unfunded in week 1, the files go unsigned and the engine runs on rules nobody
+approved — worse than the spreadsheet it replaced.
 
 **The instrument for Knowledge and Ability is the review page, not a deck.**
-`absence dashboard` writes one self-contained HTML file: every balance, the trace
-behind it, the reconciliation findings, the year-ahead list. It opens on any
-laptop with no install and no server, so it can be sent to a country lead, a
-lawyer or a works council member and they can click into it alone, at their own
-pace, on their own colleagues' records. Nobody is onboarded into a rules engine
+`absence dashboard` writes one self-contained HTML file — every balance, the
+trace behind it, the findings — that opens on any laptop with no install and no
+server, so a country lead, a lawyer or a works council member can click into it
+alone, on their own colleagues' records. Nobody is onboarded into a rules engine
 by a presentation; they are onboarded by opening a file, finding someone they
-know, and seeing why that person's number is what it is. That is the most useful
-change instrument this project has, and it is why it is a file rather than an
-application.
+know, and seeing why that person's number is what it is. That is why it is a
+file rather than an application.
 
 **Reinforcement decides whether this survives me.** A reconciliation nobody reads
 is a report generator. Three mechanisms: the match rate joins the monthly HR pack
@@ -127,14 +120,14 @@ and that human hears it before the population does.**
 | Monthly from month 2 | HR leadership | Match rate per entity, unresolved count, days in dispute, evidence backlog. The same four numbers every month. | Me, then my successor |
 
 **What is deliberately not said early:** anything about capacity or efficiency.
-The administrators hold the knowledge that makes the policy files correct. If the
+The administrators hold the knowledge that makes the policy files correct; if the
 first framing they hear is a saving, they will not sabotage anything — they will
-simply not volunteer the exceptions they have handled by hand for years, and
-those exceptions are exactly what the engine does not know about.
+simply stop volunteering the exceptions they have handled by hand for years, and
+those are exactly what the engine does not know about.
 
-### Three conversations, in the words I would actually use
+### Four conversations, in the words I would actually use
 
-The difficult parts of this plan are three specific conversations, and a plan
+The difficult parts of this plan are four specific conversations, and a plan
 that describes them abstractly has not committed to anything.
 
 **Week 0, to the administrator who maintains the Polish sheet.**
@@ -157,6 +150,22 @@ that describes them abstractly has not committed to anything.
 > One thing I need from you now: the exceptions. Every case you handle by hand
 > because the rule does not quite cover it. Those are invisible to me, and they
 > are the difference between this working and this producing confident nonsense.
+
+**Week 6, to an employee who was under-granted.** The more common of the two,
+because hand-calculation errors lean one way (section 6).
+
+> We checked how your leave balance was calculated and we had it wrong — in your
+> favour. The sheet showed 13 days; under the Dutch rules you have 19.
+>
+> The six days are yours, this leave year. They were written off in July as
+> expired and they should not have been: that only holds if we can show we told
+> you beforehand, and we cannot. If you have been holding off booking something
+> because you thought you were short, this is the moment to reconsider.
+>
+> You do not need to claim them or ask anyone, and nobody made a mistake about
+> you personally. The rule is hard to apply by hand, which is why we have stopped
+> applying it by hand. I am sending you the calculation so you can see where the
+> number comes from.
 
 **Week 6, to an employee whose balance was overstated.**
 
@@ -201,10 +210,17 @@ co-determination rights attach per measure regardless of what the company does
 elsewhere, and opening with precedent invites the answer that no precedent was
 agreed with them.
 
+**When someone says the new number is wrong.** They get the trace — the same one
+the review page shows — and a named person who reads it with them. If they are
+right, the policy file changes and every employee in that entity is recomputed,
+not only the one who asked: a wrong rule is never one person's problem. This
+route is written down before the pilot, because "we will look into it" is what
+people expect and nobody believes.
+
 **Tone, everywhere:** the reconciliation output is a list of errors in other
-people's work, and every artefact must frame it as *system* error, because that
-is what it is. If anything reads as an audit of individuals, the entities will
-defend their numbers instead of fixing them and the data will get worse.
+people's work, and every artefact must frame it as *system* error. If anything
+reads as an audit of individuals, the entities will defend their numbers instead
+of fixing them and the data will get worse.
 
 ---
 
@@ -234,30 +250,30 @@ argument and almost nothing about the administrative one.
 
 **Phase 0 — read only (weeks 1–8, Netherlands).** The engine reads the entity's
 existing export, recomputes, reports. The spreadsheet stays the system of record;
-nothing an employee sees changes.
-*Gate:* policy file signed off by counsel; every material difference explained or
-corrected; two consecutive stable runs; consultation open.
+nothing an employee sees changes. *Gate:* policy file signed by counsel; every
+material difference explained or corrected; two consecutive stable runs;
+consultation open.
 
 **Phase 1 — parallel run in NL, phase 0 opens in Poland (weeks 9–20).** Both
 systems run; the engine's number goes to HR, not to employees, and every
 disagreement is resolved before month end. Poland starts read-only in week 9 so
 its administrators learn the method while the NL findings are fresh — and Poland
 is where the evidence backlog is, so its start date matters more than its
-cut-over date.
-*Gate:* match rate above the week-1 threshold for two consecutive cycles; no
-unresolved record without a named owner and a date.
+cut-over date. *Gate:* match rate above the threshold the sponsor and I agree in
+week 1, for two consecutive cycles; no unresolved record without a named owner
+and a date.
 
 **Phase 2 — cut over per entity (from month 5, NL first).** One entity at a time.
-The engine becomes the record; the spreadsheet is frozen and kept read-only for a
-year. Order: Netherlands, Poland, India, Germany once consultation concludes, then
-Ireland and the US.
-*Gate per entity:* consultation complete where required; opening balances signed;
-a rollback actually rehearsed once, not merely written down.
+The engine becomes the record; the spreadsheet is frozen, read-only for a year.
+Order: Netherlands, Poland, India, Germany once consultation concludes, then
+Ireland and the US. *Gate per entity:* consultation complete where required;
+opening balances signed; a rollback actually rehearsed once, not merely written
+down.
 
 **Phase 3 — the rest (from month 12).** The ten `register_only` entities get an
-annual attestation, not a migration; any can be onboarded later by adding a policy
-file and a mapping. That attestation artefact does not exist yet — DECISION.md
-section 6.
+annual attestation, not a migration; any can be onboarded later by adding a
+policy file and a mapping. That attestation artefact does not exist yet —
+DECISION.md section 6.
 
 ### What I personally do, weeks 1–4
 
@@ -288,24 +304,23 @@ error or a sheet error, and that judgement is the input the engine cannot
 produce.
 
 The week-0 commitment — role unchanged, no headcount number attached — is the
-organisation's to make, not mine. I build this and hand it over; a promise from
-me expires when I move to the next process. So it is made by the person who will
-still be their manager in a year, in week 0, in that same conversation. **Named
-owner: the HR leader to whom the PL and IN administrators report.** If that
-person will not make it, the plan is re-scoped rather than run with it implied.
+organisation's to make, not mine: a promise from me expires when I move to the
+next process. So it is made in week 0, in that same conversation, by **the HR
+leader each administrator reports to**. If that person will not make it, the plan
+is re-scoped rather than run with it implied.
 
 ### The evidence backlog, stated accurately
 
 In the seeded population the engine refuses to produce a balance for six people
-out of 58 — Polish entitlement depending on prior-employment and education
-documents the company does not hold, or no signed opening balance at the ledger
-cut-over. Each is a real person whose entitlement cannot currently be determined,
-and closing the gap means going and getting a document.
+out of 58 — Polish entitlement depending on documents the company does not hold,
+or no signed opening balance at the cut-over. Each is a real person whose
+entitlement cannot currently be determined, and closing the gap means going and
+getting a document.
 
 That work is **partly one-off and partly permanent.** The backlog of existing
-employees is finite and can be cleared. New joiners are not: every Polish hire,
-indefinitely, brings the same evidence question, and that belongs in onboarding
-from the pilot onwards rather than being discovered in year two.
+employees is finite. New joiners are not: every Polish hire, indefinitely, brings
+the same evidence question, and that belongs in onboarding from the pilot onwards
+rather than being discovered in year two.
 
 ---
 
@@ -313,84 +328,75 @@ from the pilot onwards rather than being discovered in year two.
 
 Not a balanced assessment. These are the ways this goes wrong.
 
-**The pilot choice is itself a risk.** The Netherlands optimises for a guaranteed
-legal finding and a small blast radius, and buys that by testing where the
-administrative burden is smallest. Seventy people generate few balance queries;
-the Dutch administrator is not drowning. So the pilot will show that the engine
-finds real legal errors and almost nothing about whether it saves anyone
-meaningful time — which is the question a sponsor asks at month 3. *Mitigation:*
+**The pilot choice is itself a risk.** The Netherlands buys a guaranteed legal
+finding and a small blast radius by testing where the administrative burden is
+smallest: seventy people generate few balance queries. So the pilot will show
+that the engine finds real legal errors and almost nothing about whether it saves
+anyone meaningful time — which is what the sponsor asks at month 3. *Mitigation:*
 say it in week 1, before the result exists, and state that the administrative
 measurement comes from Poland in phase 1. A caveat that arrives after the
 expectation has formed reads as an excuse.
 
-**The correction problem.** Reconciliation will find overstated balances. Telling
-someone they have four fewer days than they thought, after they have booked a
-holiday, is the most damaging single moment in this project. *Position, agreed
-before the pilot and not after the first case:* overstatements are the
-organisation's risk, not the employee's — days honoured for the current leave
-year, calculation corrected going forward. This costs money. The alternative is
-that the first thing this system ever does to an employee is take something away,
-after which nothing else it says is believed.
+**The correction problem.** Telling someone they have four fewer days than they
+thought, after they have booked a holiday, is the most damaging single moment in
+this project. *Position, agreed before the pilot and not after the first case:*
+overstatements are the organisation's risk, not the employee's — days honoured
+for the current leave year, calculation corrected going forward. This costs
+money. The alternative is that the first thing this system ever does to an
+employee is take something away, after which nothing else it says is believed.
 
-**Understatements are the half that gets quietly dropped.** The tempting position
-is to wait for people to raise it. That is not a corrective, it is a filter: it
-corrects the confident and the numerate and leaves everyone else short. So
-under-granted employees are sought out actively and corrected retroactively and in
-full, including where that means reconstructing entitlement from paper records
-nobody wants to go looking for. If that is too expensive to commit to, the
-reconciliation should not be run at all — acting on one direction of error only
-is worse than not knowing.
+**Understatements are the half that gets quietly dropped.** Waiting for people to
+raise it is not a corrective, it is a filter: it corrects the confident and the
+numerate and leaves everyone else short. So under-granted employees are sought
+out actively and corrected retroactively and in full, including where that means
+reconstructing entitlement from paper records nobody wants to go looking for. If
+that is too expensive to commit to, the reconciliation should not be run at all —
+acting on one direction of error only is worse than not knowing.
 
-**The administrators.** Their main recurring task shrinks, and they are also the
-people whose knowledge makes the policy files correct. The failure mode is not
-sabotage, it is silence: the exceptions never get volunteered, which is the most
-likely cause of a technically successful and practically useless rollout.
-*Mitigation:* the week-0 conversation, owned by their manager, and the exceptions
-requested explicitly as a deliverable rather than hoped for.
+**The administrators.** The failure mode is not sabotage, it is silence: the
+exceptions never get volunteered, which is the most likely cause of a technically
+successful and practically useless rollout. *Mitigation:* the week-0
+conversation, owned by their manager, and the exceptions requested explicitly as
+a deliverable rather than hoped for.
 
-**Local autonomy.** Country HR leads control their own process today, and this
-reads as headquarters taking it away. The policy files are a real counter-argument
-— the rules stay local and become more explicitly theirs — but only if they can
-actually change them. *Mitigation:* the sign-off is real. If a country lead's
-counsel disagrees with a rule, the file changes. If the first three such requests
-are refused, the model is dead and everyone will know it.
+**Local autonomy.** This reads as headquarters taking the process away. The
+policy files are a real counter-argument — the rules stay local and become more
+explicitly theirs — but only if they can actually change them. *Mitigation:* the
+sign-off is real. If a country lead's counsel disagrees with a rule, the file
+changes. If the first three such requests are refused, the model is dead and
+everyone will know it.
 
-**Three legal exposures, each with the same shape: they are cheap now and
-expensive later.** *Co-determination* — changing how absence is recorded and
-verified may trigger it in NL and DE, and getting it wrong turns a process
-improvement into a formal dispute; NL opens week 2, DE month 3, both cut-overs
-behind that gate regardless of technical readiness. *Terms* — a file that encodes
-a rule less favourably than current local practice has unilaterally reduced
-terms, and practice that has run for years can itself be binding; counsel
-compares each file against *current practice*, not only statute, and every
-difference is escalated rather than silently adopted. *Discovery* — today
-non-compliance is undocumented, and after reconciliation it is a dated report
-naming individuals and amounts; that is the right outcome and also a risk, so
+**Three legal exposures, all cheap now and expensive later.**
+*Co-determination* — changing how absence is recorded may trigger it in NL and
+DE, and getting it wrong turns a process improvement into a formal dispute; NL
+opens week 2, DE month 3, both cut-overs behind that gate regardless of technical
+readiness. *Terms* — a file encoding a rule less favourably than current local
+practice has unilaterally reduced terms, and long-standing practice can itself be
+binding; counsel compares each file against *current practice*, not only statute.
+*Discovery* — non-compliance that is undocumented today becomes a dated report
+naming individuals and amounts, which is the right outcome and also a risk, so
 legal is in the room from week 1 and the remediation path is agreed before the
-first report exists. Separately, a cross-entity ledger including sickness is a
-new processing activity: DPIA before the pilot, sickness detail stays local, only
-day counts cross the boundary.
+first report exists. Separately, a cross-entity ledger including sickness is new
+processing: DPIA before the pilot, sickness detail stays local, only day counts
+cross the boundary.
 
-**"HR built a tool that says HR was wrong."** The first output is a list of
-errors made by HR; presented as a systems achievement, the company hears an
-admission. *Mitigation:* HR states the finding first, itself, with the fix
-already running. The related trap is the efficiency overclaim — sell this as a
-headcount saving, deliver half an FTE, and HR's next business case is not
-believed.
+**"HR built a tool that says HR was wrong."** Presented as a systems
+achievement, a list of HR's own errors reads as an admission. *Mitigation:* HR
+states the finding first, itself, with the fix already running. The related trap
+is the efficiency overclaim — sell this as a headcount saving, deliver half an
+FTE, and HR's next business case is not believed.
 
 **Nothing visible for two quarters.** Reconciliation-first produces a list of
 problems and no employee-facing improvement. *Mitigation:* be explicit that phase
 0's deliverable is a number, and report it from month 2.
 
 **Stale policy files.** The realistic technical failure is not a wrong
-calculation — the rules are tested and every figure carries its trace. It is a
-jurisdiction changing a rule, nobody updating the file, and the engine
-confidently producing wrong numbers at scale, which is worse than one spreadsheet
-being wrong for one entity. Hence `review_due` blocking publication rather than
-merely warning.
+calculation — the rules are tested and traced. It is a jurisdiction changing a
+rule, nobody updating the file, and the engine confidently producing wrong
+numbers at scale, which is worse than one spreadsheet being wrong for one entity.
+Hence `review_due` blocking publication rather than merely warning.
 
-**The person who built it leaves it.** This is a method introduced by one person
-who intends to move to the next process. If the handover is informal, the method
+**The person who built it leaves it.** If the handover is informal, the method
 leaves with him and what remains is a repository nobody owns. Section 8 is the
 mitigation, and it is a gate with conditions rather than an intention.
 
@@ -401,8 +407,8 @@ mitigation, and it is a gate with conditions rather than an intention.
 ### What it costs — an estimate, and only that
 
 None of these figures come from Groupon's data. They are the order of magnitude
-I would present in week 1 so that nobody discovers the bill later, and the first
-thing I would replace with real numbers.
+I would present in week 1 so nobody discovers the bill later, and the first thing
+I would replace with real numbers.
 
 | Line | Year one | Note |
 |---|---|---|
@@ -415,11 +421,10 @@ thing I would replace with real numbers.
 | My own time | roughly half a role for two quarters, tapering | Then handover (section 8) |
 | Build and tooling | near zero | It exists. Maintenance is a few days a year |
 
-**Year one does not pay for itself, and it should not be presented as if it
-does.** Against 0.25–0.5 FTE released annually (below), an outlay of roughly
-15–20 counsel days and 30–50 internal person-days outside my own time is not
-recovered inside twelve months. It is recovered from year two, and the case that
-actually carries it is the template argument, not the saving.
+**Year one does not pay for itself, and should not be presented as if it does.**
+Against 0.25–0.5 FTE released annually, an outlay of 15–20 counsel days and 30–50
+internal person-days is not recovered inside twelve months. It is recovered from
+year two, and the case that carries it is the template argument, not the saving.
 
 ### What the corrections cost, in both directions
 
@@ -427,15 +432,15 @@ This is the number people expect to point one way and does not.
 
 On the seeded data the 16 material differences total 60 days in dispute, and the
 **net is 18 days understated on the local sheets** — days owed to employees, not
-days the company can recover. The no-clawback position on overstatements is the
-visible concession; the larger half of the bill is retroactive correction of
+days the company can recover. No-clawback on overstatements is the visible
+concession; the larger half of the bill is retroactive correction of
 under-granting, and that half is not a concession, it is a debt.
 
 I expect a real run to point the same way, for a structural reason rather than a
 lucky sample: hand-calculation errors lean one way. Defaulting a Polish employee
-to the lower tier when the education evidence is missing under-grants. Writing
-off Dutch days where the forfeiture is not enforceable under-grants. Nobody
-hand-calculates generously by accident.
+to the lower tier when the evidence is missing under-grants. Writing off Dutch
+days where the forfeiture is not enforceable under-grants. Nobody hand-calculates
+generously by accident.
 
 So the sentence for the sponsor in week 1 is: **this will find that we owe people
 days, and correcting that is the point rather than a side effect.** Said before
@@ -455,19 +460,15 @@ removed. The released capacity goes to work not currently being done at all —
 clearing the evidence backlog, which directly increases what several named people
 are owed.
 
-The returns that do justify the project, in order of size:
-
-1. **Error exposure.** The reconciliation flags material differences on roughly a
-   quarter of comparable records and refuses to compute another seven at all.
-   Even at a fraction of that rate, the exposure — understated balances that
-   become claims, unenforceable forfeitures, wrong final settlements — is worth
-   more than half an FTE.
-2. **Reviewability.** The annual legal review changes from *re-derive the rules*
-   to *approve a diff*, and that cost is the same whether there are six entities
-   or sixteen.
-3. **It is a template.** Any global process with local legal parameters, an
-   annual renewal and an evidential burden has this shape. The second one costs a
-   fraction of the first.
+The returns that do justify it, in order of size. **Error exposure:** the
+reconciliation flags material differences on roughly a quarter of comparable
+records; even at a fraction of that rate, understated balances that become
+claims, unenforceable forfeitures and wrong final settlements are worth more than
+half an FTE. **Reviewability:** the annual legal review changes from *re-derive
+the rules* to *approve a diff*, and that costs the same at six entities or
+sixteen. **A template:** any global process with local legal parameters, an
+annual renewal and an evidential burden has this shape, and the second one costs
+a fraction of the first.
 
 ### The metric that actually matters
 
@@ -481,9 +482,8 @@ The obvious objection is that I have defined success as being asked to do more
 work. The answer is that it is the only indicator here that cannot be produced by
 instruction. A match rate can be mandated; attendance at a demo can be mandated.
 Nobody can be told to come and ask for this to be done to their own process. That
-happens only if the people doing the work concluded, on their own work and on a
-daily basis, that it made their week easier — which is what adoption actually
-means, and the reason this project exists rather than a faster spreadsheet.
+happens only if the people doing the work concluded, on their own work, that it
+made their week easier — which is what adoption actually means.
 
 If the answer is no, a leave calculation was automated in six entities and that
 is all that happened: modest, real, clearly insufficient — and the honest
@@ -507,21 +507,18 @@ transfers directly.
 
 The second reason is practical: it is the domain I know. I spent **two and a half
 years** implementing and running an LMS, so I can tell a real requirement from a
-vendor's version of one and will not need six weeks to learn the process before I
-can model it. That is a reason to pick it second, not a claim of expertise beyond
-it.
+vendor's version of one and will not need six weeks to learn the process first.
+That is a reason to pick it second, not a claim of expertise beyond it.
 
 ### How to verify the effort estimate
 
-The numbers above are a model, not a measurement: a two-week time diary with the
+A model, not a measurement. It is replaced by a two-week time diary with the
 administrators in Poland and India, twelve months of leave-tagged service-desk
-tickets, and a count of manual adjustments over one leave year would replace
-them — measured before and after in Poland during phase 1, which is the only
-number that settles it and is not obtainable from the Dutch pilot.
-
-If the measured figure comes in materially below 0.4 FTE, the honest response is
-to say so and re-argue the project on compliance exposure and on the template,
-which it carries without the efficiency claim at all.
+tickets, and a before-and-after in Poland during phase 1 — the only number that
+settles it, and not obtainable from the Dutch pilot. If the measured figure comes
+in materially below 0.4 FTE, the honest response is to say so and re-argue the
+project on compliance exposure and on the template, which it carries without the
+efficiency claim at all.
 
 ---
 
@@ -565,7 +562,9 @@ and the four monthly numbers going to HR leadership from someone who is not me.
 
 1. A named person has run **one complete annual cycle** end to end themselves —
    year-end expiry, the `annual-update` diff, counsel sign-off on at least one
-   changed file — with me available but not doing it.
+   changed file — with me available but not doing it. Where the calendar does not
+   allow a full cycle inside the window below, the equivalent: each of those
+   events run once by that person, whenever in the year it falls.
 2. Every engine entity has a signed policy file with a `review_due` date in the
    future and a named owner who can say what their file does.
 3. The monthly report has been produced by that person, not by me, for two
@@ -577,8 +576,8 @@ the monthly reconciliation, no — that is the thing that quietly becomes
 permanent. After the gate opens I am available for questions for one further
 quarter and I do not touch the process. If the gate has not opened within six
 months of the second entity going live, that is a finding about the plan, not a
-reason to extend my involvement, and it goes to the sponsor as such.
+reason to extend my involvement, and it goes to the CHRO as such.
 
-The failure mode here is not dramatic. It is that the person who built it stays
-useful, so nobody learns it, so it never becomes the organisation's — and then
-the second process never happens, which was the entire point.
+The failure mode is not dramatic: the person who built it stays useful, so nobody
+learns it, so it never becomes the organisation's — and the second process never
+happens, which was the entire point.
