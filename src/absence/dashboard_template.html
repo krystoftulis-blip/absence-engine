@@ -270,8 +270,8 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-si
     <div class="panel" id="ask">
       <div class="head"><h2>Ask about this</h2></div>
       <div class="body">
-        <p class="note">Claude reads what is on screen — the figures and the calculation trace — and explains it in plain language. It does not calculate anything; the numbers come from the engine.<br><br>
-        The first question asks your permission to use your own Claude account. Decline and the rest of the page is unaffected.</p>
+        <p class="note" id="askIntro">Claude reads what is on screen — the figures and the calculation trace — and explains it in plain language. It does not calculate anything; the numbers come from the engine.</p>
+        <p class="note" id="askConsent">The first question asks your permission to use your own Claude account. Decline and the rest of the page is unaffected.</p>
         <div class="chips" id="askChips"></div>
         <textarea id="askIn" placeholder="e.g. Why does this person have 26 days and not 20?"></textarea>
         <div class="askrow">
@@ -638,6 +638,7 @@ $("#askIn").addEventListener("keydown", (e) => {
 });
 
 function askUnavailable() {
+  $("#askConsent").classList.add("hidden");
   $("#askChips").classList.add("hidden");
   $("#askIn").classList.add("hidden");
   $("#askGo").classList.add("hidden");
