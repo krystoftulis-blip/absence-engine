@@ -147,3 +147,20 @@ and reports where their numbers and the recomputed numbers disagree.
 server, openable by anyone you send it to. It is a read-only view for the
 phase-0 audience, not an employee self-service portal; DECISION.md section 6
 says why that distinction is load-bearing.
+
+### The explanation panel
+
+Opened inside Claude, the same page also offers a panel that puts the
+calculation trace into plain language. It reads the trace the engine already
+produced and never computes anything - the line DECISION.md section 8 draws. It
+runs on the reader's own Claude account, so it is absent when the page is opened
+from disk or from a shared link, and the page renders and works identically
+without it.
+
+![The explanation panel answering why PL-0002 has no leave balance](docs/explanation-panel.png)
+
+Above: `PL-0002` is UNKNOWN because Polish entitlement depends on service
+evidence the employer does not hold. The panel restates the flag, the legal
+basis and the trace - and produces no number, because there is none to produce.
+That is the whole point of keeping AI on top of the explanation rather than
+inside the calculation.
