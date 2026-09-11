@@ -128,7 +128,9 @@ tests/                  jurisdiction golden cases
 ## What to look at first
 
 **`policies/registry.yaml`** is the decision, in executable form. Every one of
-the ~40 subsidiaries in Groupon's Exhibit 21.1 is classified, and the engine
+the ~40 subsidiaries in Groupon's Exhibit 21.1 is classified - plus one entity
+that is *not* in Exhibit 21.1, because it is a branch rather than a subsidiary
+(see DECISION.md section 7) - and the engine
 will not silently process an entity that is not listed.
 
 **`python -m absence explain --employee PL-0002`** shows the engine refusing to

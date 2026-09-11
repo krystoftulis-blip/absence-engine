@@ -254,7 +254,7 @@ Ireland and the US.
 *Gate per entity:* consultation complete where required; opening balances signed;
 a rollback actually rehearsed once, not merely written down.
 
-**Phase 3 — the rest (from month 12).** The nine `register_only` entities get an
+**Phase 3 — the rest (from month 12).** The ten `register_only` entities get an
 annual attestation, not a migration; any can be onboarded later by adding a policy
 file and a mapping. That attestation artefact does not exist yet — DECISION.md
 section 6.

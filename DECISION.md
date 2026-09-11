@@ -34,8 +34,11 @@ payroll at all.
 Treating "absence management across our legal entities" as a 40-entity problem
 would mean forty policy sets, forty annual legal reviews and forty migrations
 to serve a few hundred people. `policies/registry.yaml` classifies all of them
-instead: **six entities carry roughly 88% of employees**, and those six are what
+instead: **six entities carry roughly 87% of employees**, and those six are what
 the engine covers in v1.
+
+One entity in that registry is not from Exhibit 21.1 at all, and finding it
+changed how I read the source. Section 7 has it.
 
 **The differences between jurisdictions are real, but they are parametric.**
 They are not forty bespoke systems; they are the same small set of dimensions
@@ -107,7 +110,7 @@ holiday calendars; sick-pay bands; payout-on-termination rules.
 - *Payroll integration.* Absence balances feed payroll for encashment and final
   settlements. Wiring that up before the balances themselves are trusted would
   propagate today's errors into people's pay.
-- *The 26 dormant entities and the 9 small ones.* Named in the registry with an
+- *The 26 dormant entities and the 10 small ones.* Named in the registry with an
   accountable owner and an annual review date, but not configured - and the
   attestation that review implies is not built either (section 6). A stale,
   unreviewed policy file is more dangerous than a small entity continuing under
@@ -243,7 +246,7 @@ probably wrong.
 |---|---|---|
 | 1 | Real headcount by legal entity and by work location | Internally, a payroll extract per entity (India needs state of work, Germany needs Bundesland). Externally and without asking anyone, the average employee numbers in each entity's filed statutory accounts: Companies House, CRO, KVK, Bundesanzeiger, KRS |
 | 2 | Every policy file, rule by rule | Local counsel per jurisdiction signs the file; the `reviewed_by` and `review_due` fields exist to be filled in, and `annual-update` flags them as blockers until they are |
-| 3 | Which entities actually employ people | Company secretarial confirmation against Exhibit 21.1 |
+| 3 | Which entities actually employ people, **and which employers are not entities at all** | Company secretarial confirmation against Exhibit 21.1, reconciled against payroll rather than against the filing: branches, representative offices and employer-of-record arrangements employ people without creating a subsidiary. `CZ-BRANCH` is the worked example (section 7) |
 | 4 | Opening balances | Each entity signs off the balance at cut-over; unsigned means UNKNOWN, and that backlog is real work |
 | 5 | The admin-effort estimate | Two-week time diary in two entities plus 12 months of leave-related service-desk tickets (see CHANGE_PLAN.md) |
 | 6 | Works council position in DE and NL | Before, not after, any process change is announced |
@@ -259,7 +262,7 @@ probably wrong.
   window onto figures this project has just demonstrated are wrong.
 - No payroll write-back. The engine computes the days that must be paid out on
   separation or above a statutory cap, but nothing carries that figure into pay.
-- The `register_only` tier is a decision without an artefact. Nine entities have
+- The `register_only` tier is a decision without an artefact. Ten entities have
   a named owner and a review cadence in `registry.yaml`, but nothing produces the
   attestation they are supposed to sign each year. The boundary is drawn and only
   one side of it is built.
@@ -285,21 +288,51 @@ probably wrong.
 ## 7. Where I think I am most likely wrong
 
 The brief asks for a specific correction, so here is where I would look first.
+The first item is not a hypothesis - it is an error I found in my own work while
+finishing this document, and the reason it is item 1 is that it is the one that
+would have shipped.
 
-1. **The tool has never met a real file.** Every figure here comes from data I
+1. **I built the registry on a list of subsidiaries, and a subsidiary list is
+   not a list of employers.** Everything above keys the unification boundary on
+   Exhibit 21.1. While checking Groupon's own careers site I found an open
+   office in Prague - and no Czech entity anywhere in Exhibit 21.1. The Czech
+   commercial register explains why: the Czech workforce sits in *Groupon
+   Management, LLC - Czech Branch* (IČ 19491450), an `odštěpný závod` of a US
+   entity. A branch is not a subsidiary, so it is invisible to the document I
+   treated as authoritative, while its employees are fully subject to the Czech
+   Labour Code.
+
+   This is the same class of error as India - one legal entity, several
+   applicable regimes - except across a border rather than inside one, and the
+   data model already survives it: entitlement is resolved from `work_region`,
+   not from the place of incorporation. What failed was not the architecture but
+   the source. Branches, representative offices and employer-of-record
+   arrangements all put people on the ground without creating a subsidiary, so
+   the entity list has to be reconciled against payroll rather than against a
+   filing.
+
+   `CZ-BRANCH` is now in the registry as `register_only` with an assumed
+   headcount and a named owner. It is deliberately not configured in v1: since
+   2021 Czech annual leave is computed in *hours* - four times the weekly
+   working time - and every other policy file here is `unit: days`. Configuring
+   it is therefore not copying an existing file, it is the first genuine test of
+   whether the unit is really a parameter or only looks like one. That is a good
+   next piece of work and a bad thing to do the night before a deadline.
+
+2. **The tool has never met a real file.** Every figure here comes from data I
    generated. The error classes the reconciliation reports are the ones the
    policies imply; they may not be the ones an entity's spreadsheet actually
    produces. The first run against a live file may surface a whole category I
    have not modelled, and the match rate may look nothing like this one.
-2. **The boundary may be drawn too tight.** Nine entities with roughly 200 people
+3. **The boundary may be drawn too tight.** Ten entities with roughly 230 people
    sit in `register_only`. If several share a jurisdiction with an engine entity,
    configuring them costs almost nothing and my "small entities are cheaper left
    alone" reasoning is just wrong for them.
-3. **Sick leave may be the bigger prize.** I made annual leave the centre. In an
+4. **Sick leave may be the bigger prize.** I made annual leave the centre. In an
    organisation with large populations in Poland and India, employer-funded sick
    pay bands and state-level sick quotas may consume more admin time and carry
    more cost exposure than annual leave does.
-4. **Reconciliation-first may be too slow for the sponsor.** It is the right
+5. **Reconciliation-first may be too slow for the sponsor.** It is the right
    engineering sequence and the right risk sequence. It is also a plan whose
    first visible output is a list of problems, which is a hard thing to fund.
 

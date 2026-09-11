@@ -11,10 +11,17 @@
 # handful of entities. Configuring the entities where the people actually are,
 # and putting a named human owner on the rest, is cheaper and safer.
 #
-# HONESTY NOTE: the per-entity headcount split is NOT public. The `headcount`
+# HONESTY NOTE 1: the per-entity headcount split is NOT public. The `headcount`
 # figures below are working assumptions used to demonstrate the segmentation
 # method. Replacing them with the real HRIS extract is verification step #1 in
 # DECISION.md, and it may well move entities between treatments.
+#
+# HONESTY NOTE 2: Exhibit 21.1 is a list of SUBSIDIARIES, which is not the same
+# as a list of places Groupon employs people. CZ-BRANCH below is the proof: the
+# Czech workforce sits in a registered branch of a US entity, so it appears in
+# the Czech commercial register and not in Exhibit 21.1. Any registry keyed on a
+# subsidiary list will miss branches, and employment law follows the place of
+# work, not the place of incorporation. See DECISION.md section 7.
 
 version: 1
 as_of: 2026-09-01
@@ -154,6 +161,27 @@ entities:
     headcount: 6
     owner_role: "HR Business Partner, Western Europe"
 
+  # Not from Exhibit 21.1 - a branch, not a subsidiary. Found by checking the
+  # Czech commercial register against Groupon's own careers site, which lists an
+  # open Prague office. Registered as "Groupon Management, LLC - Czech Branch"
+  # (IC 19491450), an odstepny zavod of a US entity. Czech employees of that
+  # branch are subject to the Czech Labour Code (zakonik prace) regardless of
+  # where the LLC is incorporated, and since 2021 Czech annual leave is computed
+  # in HOURS - four times the weekly working time - not in days. Every other
+  # policy file in this repository is `unit: days`, so configuring this entity is
+  # not a copy of an existing file: it is the first real test of whether the unit
+  # is genuinely a parameter. That is why it is register_only in v1 and named as
+  # a finding rather than quietly added.
+  - entity_id: CZ-BRANCH
+    legal_entity: "Groupon Management, LLC - Czech Branch (odstepny zavod)"
+    jurisdiction: CZ
+    treatment: register_only
+    headcount: 30
+    headcount_basis: assumed
+    owner_role: "Country HR Lead, Czech Republic"
+    source: "Czech commercial register (IC 19491450); Groupon careers site lists a Prague office"
+    rationale: "Branch of a US entity, so absent from Exhibit 21.1. Employment law follows the place of work."
+
   # ---------------------------------------------------------------- dormant
   - {entity_id: US-ACTIVITIES,   legal_entity: "Groupon Activities, LLC",            jurisdiction: US, treatment: dormant, headcount: 0}
   - {entity_id: US-DISTRIB,      legal_entity: "Groupon Distribution Services, LLC", jurisdiction: US, treatment: dormant, headcount: 0}
@@ -184,4 +212,10 @@ entities:
 
 source_of_entity_list: >
   Exhibit 21.1 (Subsidiaries of Groupon, Inc.) to the Form 10-K for FY2024,
-  filed with the SEC on 11 March 2025, plus the parent Groupon, Inc.
+  filed with the SEC on 11 March 2025, plus the parent Groupon, Inc., plus one
+  entity that is NOT in Exhibit 21.1 because it is a branch rather than a
+  subsidiary (CZ-BRANCH). A subsidiary list is a corporate-structure document,
+  not a list of employers; branches, representative offices and
+  employer-of-record arrangements all put people on the ground without creating
+  a subsidiary. Reconciling this list against payroll is verification step #3 in
+  DECISION.md.
